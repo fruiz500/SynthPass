@@ -21,10 +21,10 @@ This is a browser extension, and therefore is poorly supported on mobile devices
 https://synthpass.com/app
 
 # Credits:
-smart Password engine based on WiseHash by F. Ruiz 2014: https://github.com/fruiz500/wisehash
-engine: NaCl by D. Bernstein, W. Janssen, T. Lange, P. Schwabe, M. Dempsky, and A. Moon 2013
-tweetNaCl JavaScript implementation by D. Chestnykh and D. Mandiri 2015: https://github.com/fruiz500/wisehash
-scrypt key stretching implementation by D. Chestnykh 2014: https://github.com/fruiz500/wisehash
+- smart Password engine based on WiseHash by F. Ruiz 2014: https://github.com/fruiz500/wisehash
+- engine: NaCl by D. Bernstein, W. Janssen, T. Lange, P. Schwabe, M. Dempsky, and A. Moon 2013
+- tweetNaCl JavaScript implementation by D. Chestnykh and D. Mandiri 2015: https://github.com/fruiz500/wisehash
+- scrypt key stretching implementation by D. Chestnykh 2014: https://github.com/fruiz500/wisehash
 
 # Usage of the extension (also in help.html)
 The extension is available for Chrome and its derivatives and for Firefox. Here are the links:
