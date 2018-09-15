@@ -8,6 +8,7 @@
 <link href="style.css" rel="stylesheet">
       
 <!--this only loads two regular expressions: blackListExp and wordListExp, plus their lengths-->
+<!--based on WiseHash, by yours truly. https://github.com/fruiz500/wisehash-->
 <script src="lib/dictionary_en.js"></script>
 
 <!--Tweet NaCl crypto library by Dmitry Chestnykh. https://github.com/dchest/tweetnacl-js-->
@@ -51,8 +52,8 @@
   <div id="a3" class="helptext">
     <p>Sometimes you need to change the password for a particular webpage. Typically you will reach a page displaying at least two password fields, one for the old password and one for the new. Sometimes you are asked to repeat the new password, or the old, or both. In this case clicking the SynthPass logo will open a popup containing several rows, one for each password field on the webpage, arranged in the same order. This is what you do next:</p>
     <ol>
-      <li>Type in your Master Password in the box or boxes corresponding to the old password. Type the old serial, which should appear on the first row, into the boxes next to them. Add the user ID, if the box is not populated already. SynthPass does not read the instructions on the page, and therefore cannot identify automatically the input fields meant for the old and the new passwords, but you can. If you omit typing in a password or serial box, SynthPass will use the value in the box above it. <em>To use the Master Password as-is, without any synthesis, type a single dash ( - )</em> in the serial box to its right. </li>
-      <li>Do the same for the box or boxes corresponding to the new password. Typically this will involve simply a new serial, and in this case it is enought to type it in the corresponding box or boxes. Again, if a box is left empty, the value above it will be used.</li>
+      <li>Type in your Master Password in the box or boxes corresponding to the old password. Type the old serial, which should appear on the first row, into the boxes next to them. Add the user ID, if the box is not populated already. SynthPass does not read the instructions on the page, and therefore cannot identify automatically the input fields meant for the old and the new passwords, but you can. If you omit typing in a password or serial box, SynthPass will use the value in the box above it. <em>To use the Master Password as-is, without any synthesis, type a single dash ( - )</em> in the serial box to its right.</li>
+      <li>Do the same for the box or boxes corresponding to the new password. Typically this will involve simply a new serial, and in this case it is enought to type it in the corresponding box or boxes. Again, if a box is left empty, the value above it will be used. To revert to not using a serial, type a space in that serial field.</li>
       <li>To make SynthPass remember the new serial, click on it or the password box to its left so it is highlighted before clicking OK. Then click <strong>OK</strong>.</li>
       <li>When the popup disappears, all the password fields, new and old, will be filled. Proceed from this point as if you had filled them manually.</li>
     </ol>
@@ -158,15 +159,15 @@ Output
     <p><strong>Notice:</strong> Since this program is distributed as a piece of human-readable code, we consider it an expression of free speech protected by the laws of many countries. Putting into circulation tampered versions of the app, whether by individuals or public entities, violates free speech and copyright protection laws.</p>
     <p>SynthPass contains strong cryptographic methods, which may be illegal to use in some countries. Please check the local laws before using it.</p>
     <div id="canary"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8BAMAAADI0sRBAAAAGFBMVEUAAAAAAAD///91XhdgYGCcnJzMzMzUqipkv+fEAAAAAXRSTlMAQObYZgAAAYFJREFUOMt1lLGOgzAQREEUaVkHkhpEUkOVmvsDIt31IF1PdP8vnWwzHtaGKRDmsbO7eHGm9Cfyys4km/ojmEvQ/ZBS10N6Gl+I18/v6G/KtCrTOnVuscbWSwsxPYPBwEsGw1nxgEGpxoUzuI00MjuDqWdwvyD4e88nuOdbMFOge3j79V3liHAjL7np4kt4u5V2fwS8bGbbHd3hjZ0wyt1hZAzuxL3FZoffqrUSlaG4qqU2HFbMfoplj68pNqr0T4xF4SFUMyJcY+EqxVgTS4QlwkZjrAXSubFRsw4H5p5BxLlIgwfTIW6DoXafPcYkqN74zRf3uN7bf2HHChvnuMGX7WoRYD8tTN/4q2CS/YQ8tvY79GwsXjO3J6jq/Qz7Mds8ds5RSDypAmz4zSr1E/EfQ9MJHjDd5PSGu1Vt8Q3BOBrVDuNdnj0DB2RCvH0xPpnYHoLhXmluXdajU7E7ONOj+YyP5Fzx9MDHQHIkQGCv1WtcaFqSkKeUumjnVB80TP0D1fGXaRHBg/YAAAAASUVORK5CYII=">
-    <p>This paragraph and the canary logo above attest to the fact that, up until the release of version 0.1 (September 2018) we have not received any requests under gag order for user data or modifications of the code. This paragraph will be periodically updated as this situation continues.</p>
+    <p>This paragraph and the canary logo above attest to the fact that, up until the release of version 0.1.1 (September 2018) we have not received any requests under gag order for user data or modifications of the code. This paragraph will be periodically updated as this situation continues.</p>
     </div>
   </div>
   <hr>
   <address>
-  SynthPass 0.1 &#169; F. Ruiz 2018
+  SynthPass 0.1.1 &#169; F. Ruiz 2018
   </address>
   <ul>
-    <li> smart Password engine based on WiseHash by F. Ruiz 2014</li>
+    <li>smart Password engine based on WiseHash by F. Ruiz 2014</li>
     <li>engine: NaCl by D. Bernstein, W. Janssen, T. Lange, P. Schwabe, M. Dempsky, and A. Moon 2013</li>
     <li>tweetNaCl JavaScript implementation by D. Chestnykh and D. Mandiri 2015</li>
     <li>scrypt key stretching implementation by D. Chestnykh 2014</li>
