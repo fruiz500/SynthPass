@@ -27,6 +27,9 @@ tweetNaCl JavaScript implementation by D. Chestnykh and D. Mandiri 2015: https:/
 scrypt key stretching implementation by D. Chestnykh 2014: https://github.com/fruiz500/wisehash
 
 # Usage of the extension (also in help.html)
+The extension is available for Chrome and its derivatives and for Firefox. Here are the links:
+Chrome: https://chrome.google.com/webstore/detail/synthpass/khkpfnickpejcjhajmkljfadcaegphkd
+Firefox: https://addons.mozilla.org/en-US/firefox/addon/synthpass/
 
 When a password field is visible on a webpage, do this:
 
