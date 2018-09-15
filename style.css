@@ -1,0 +1,199 @@
+html {
+	-webkit-text-size-adjust: 100%;
+}
+body {
+	font-family: Sans-Serif;
+	margin-left: 1%;
+	margin-right: 1%;
+	overflow: auto;
+	background-color: #f7f7f7;
+	color: #000000;
+}
+input:focus {
+    outline: none !important;
+    border:1px solid #00CA68;
+    box-shadow: 0 0 10px #719ECE;
+}
+div:focus {
+    outline: none !important;
+    border:1px solid #00CA68;
+    box-shadow: 0 0 10px #719ECE;
+}
+.cssbutton {
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	font-family: Arial;
+	font-size: 12pt;
+	padding: 6px;
+	text-decoration: none;
+	color: #666666;
+	background: #dedede;
+}
+.cssbutton:hover {
+	text-decoration: none;
+	cursor: pointer;
+	background: #c4c4c4;
+}
+.cssbutton:focus {
+	outline: none !important;
+    border:1px solid #00CA68;
+    box-shadow: 0 0 10px #719ECE;
+}
+.cssbox {
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 6px;
+	font-size: 10pt;
+	text-decoration: none;
+	width: 100%;
+	-webkit-appearance: none;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	color: #000000;
+	background: #fffff5;
+	border: 1px solid #dedede;
+	overflow: auto;
+	padding: 0px;
+	padding-left: 6px;
+	height: 25px;
+}
+.helpitem {
+	font-size: medium;
+	cursor: pointer;
+	padding: 1px;
+}
+.helpitem:hover {
+	background-color: #eeeeee;
+}
+.helptext {
+	font-size: medium;
+	display: none;
+}
+.blink {
+	-webkit-animation: blink .75s linear infinite;
+	-moz-animation: blink .75s linear infinite;
+	-ms-animation: blink .75s linear infinite;
+	-o-animation: blink .75s linear infinite;
+	animation: blink .75s linear infinite;
+	color: blue;
+}
+ @-webkit-keyframes blink {
+ 0% {
+opacity: 1;
+}
+ 50% {
+opacity: 1;
+}
+ 50.01% {
+opacity: 0;
+}
+ 100% {
+opacity: 0;
+}
+}
+ @-moz-keyframes blink {
+ 0% {
+opacity: 1;
+}
+ 50% {
+opacity: 1;
+}
+ 50.01% {
+opacity: 0;
+}
+ 100% {
+opacity: 0;
+}
+}
+ @-ms-keyframes blink {
+ 0% {
+opacity: 1;
+}
+ 50% {
+opacity: 1;
+}
+ 50.01% {
+opacity: 0;
+}
+ 100% {
+opacity: 0;
+}
+}
+ @-o-keyframes blink {
+ 0% {
+opacity: 1;
+}
+ 50% {
+opacity: 1;
+}
+ 50.01% {
+opacity: 0;
+}
+ 100% {
+opacity: 0;
+}
+}
+ @keyframes blink {
+ 0% {
+opacity: 1;
+}
+ 50% {
+opacity: 1;
+}
+ 50.01% {
+opacity: 0;
+}
+ 100% {
+opacity: 0;
+}
+}
+
+#mainScr {
+	display: block;
+	width: 300px;
+}
+#pwdTable {
+	display: none;
+}
+#helpBtn {
+	float: right;
+    margin-right: 10px;
+}
+
+#helpScr {
+	max-width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#helpHeading {
+	color: green;
+	font-size: x-large;
+}
+#canary {
+	float: left;
+}
+#helpTable {
+	width: 1000px;
+}
+#outputBox {
+	padding: 5px;
+	background: #f0fffb
+}
+#helpCheckCell {
+	text-align: center;
+}
+#siteName {
+	text-align: center;
+}
+
+#userTable {
+	display: none;
+}
+#userName {
+	text-align: center;
+}
