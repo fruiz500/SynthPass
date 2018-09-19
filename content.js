@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener(
 					if(i > 0){								//detect single text or email input immediately before, skipping hidden inputs
 						if(!userDone){
 							var j = 1;
-							while(isHidden(inputElements[i-j]) && j <= i) j++;
+							while(isHidden(inputElements[i-j]) && j < i) j++;
 							if(inputElements[i-j].type == 'text' || inputElements[i-j].type == 'email'){
 							textId = [inputElements[i-j]];
 							userDone = true
