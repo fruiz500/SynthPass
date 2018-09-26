@@ -45,7 +45,7 @@ chrome.runtime.onMessage.addListener(
 			}
 		}
 		if(request.userName){
-			if(passwords){
+			if(passwords && textId[0]){
 				textId[0].value = request.userName;			//insert user name
 			}else{												//userId without pwd; find it and fill the last one
 				textId = [];
@@ -55,7 +55,7 @@ chrome.runtime.onMessage.addListener(
 						textId.push(inputElements[i])
 					}
 				}
-				textId[textId.length - 1].value = request.userName
+				if(textId[0]) textId[textId.length - 1].value = request.userName
 			}
 		}
 

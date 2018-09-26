@@ -62,6 +62,11 @@ div:focus {
 	padding-left: 6px;
 	height: 25px;
 }
+.field-icon {
+  margin-left: -20px;
+  height: 12px;
+  z-index: 2;
+}
 .helpitem {
 	font-size: medium;
 	cursor: pointer;

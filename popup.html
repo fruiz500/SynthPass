@@ -38,33 +38,31 @@
 
 <div id="mainScr" width="300px">
 <h3>SynthPass passwords</h3>
-<div id="mainMsg"><span id="failMsg">I cannot see a password to be filled<br>click me for user ID</span></div>
+<div id="mainMsg" title="messages appear here"><span id="failMsg">I cannot see a password to be filled<br>click me for user ID</span></div>
 <table width="300px" id="userTable">
 <tr>
 <td><span id="idLabel">User ID:</span></td>
 <td><input type="text" class="cssbox" id="userName" title="optional user ID" placeholder="user ID here"/></td>
 <td width="5%"><span id="lengthLabel">&nbsp;length:</span></td>
-<td width="15%"><input type="text" class="cssbox" id="pwdLength" title="password length if less than 44"/></td>
+<td width="15%"><input type="text" class="cssbox" id="pwdLength" title="password length (default 44); begin with 'pin' for numeric output"/></td>
 </tr>
 </table>
 <table width="300px" id="pwdTable">
 <tr>
 <th>
-Master Password
+<span id="pwdLabel" title="a mnemonic word appears here as you type"=>Master Password</span>
 </th>
 <th>
-<span id="ShowLabel">Show</span>
 </th>
 <th>
-Serial
+<span title="add a serial to change output with same Master Password">Serial</span>
 </th>
 </tr>
 <tr>
 <td width="75%">
-<input type="password" class="cssbox" id="masterPwd1" title="type Master Password here" placeholder="password here"/>
+<input type="password" class="cssbox" id="masterPwd1" title="type Master Password here" placeholder="password here"/><img id="showPwdMode1" class="field-icon" src="images/eye-24.png" title="click this to see/hide the Password">
 </td>
 <td width="5%" align="center">
-<input type='checkbox' id='showPwdMode1' title="check this to see the Password">
 </td>
 <td width="20%">
 <input type="text" class="cssbox" id="serial1" title="add optional serial"/>
@@ -72,10 +70,9 @@ Serial
 </tr>
 <tr id="row2">
 <td width="75%">
-<input type="password" class="cssbox" id="masterPwd2" title="type master password here" placeholder="password here"/>
+<input type="password" class="cssbox" id="masterPwd2" title="type master password here" placeholder="password here"/><img id="showPwdMode2" class="field-icon" src="images/eye-24.png" title="click this to see/hide the Password">
 </td>
 <td width="5%" align="center">
-<input type='checkbox' id='showPwdMode2' title="check this to see the Password">
 </td>
 <td width="20%">
 <input type="text" class="cssbox" id="serial2" title="add optional serial"/>
@@ -83,10 +80,9 @@ Serial
 </tr>
 <tr id="row3">
 <td width="75%">
-<input type="password" class="cssbox" id="masterPwd3" title="type Master Password here" placeholder="password here"/>
+<input type="password" class="cssbox" id="masterPwd3" title="type Master Password here" placeholder="password here"/><img id="showPwdMode3" class="field-icon" src="images/eye-24.png" title="click this to see/hide the Password">
 </td>
 <td width="5%" align="center">
-<input type='checkbox' id='showPwdMode3' title="check this to see the Password">
 </td>
 <td width="20%">
 <input type="text" class="cssbox" id="serial3" title="add optional serial"/>
@@ -94,10 +90,9 @@ Serial
 </tr>
 <tr id="row4">
 <td width="75%">
-<input type="password" class="cssbox" id="masterPwd4" title="type Master Password here" placeholder="password here"/>
+<input type="password" class="cssbox" id="masterPwd4" title="type Master Password here" placeholder="password here"/><img id="showPwdMode4" class="field-icon" src="images/eye-24.png" title="click this to see/hide the Password">
 </td>
 <td width="5%" align="center">
-<input type='checkbox' id='showPwdMode4' title="check this to see the Password">
 </td>
 <td width="20%">
 <input type="text" class="cssbox" id="serial4" title="add optional serial"/>
