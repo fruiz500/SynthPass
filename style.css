@@ -62,6 +62,9 @@ div:focus {
 	padding-left: 6px;
 	height: 25px;
 }
+.message {
+	white-space: pre-line;
+}
 .field-icon {
   margin-left: -20px;
   height: 12px;
