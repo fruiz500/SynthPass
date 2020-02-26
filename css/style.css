@@ -14,6 +14,11 @@ input:focus {
     border:1px solid #00CA68;
     box-shadow: 0 0 10px #719ECE;
 }
+textarea:focus {
+    outline: none !important;
+    border:1px solid #00CA68;
+    box-shadow: 0 0 10px #719ECE;
+}
 div:focus {
     outline: none !important;
     border:1px solid #00CA68;
@@ -55,7 +60,7 @@ div:focus {
 	-moz-box-shadow: none;
 	box-shadow: none;
 	color: #000000;
-	background: #fffff5;
+	background: #fffffa;
 	border: 1px solid #dedede;
 	overflow: auto;
 	padding: 0px;
@@ -64,6 +69,7 @@ div:focus {
 }
 .message {
 	white-space: pre-line;
+	height: 30px;
 }
 .field-icon {
   margin-left: -20px;
@@ -73,14 +79,17 @@ div:focus {
 .helpitem {
 	font-size: medium;
 	cursor: pointer;
-	padding: 1px;
+	padding: 14px;
+	margin: 0;
 }
 .helpitem:hover {
 	background-color: #eeeeee;
 }
 .helptext {
 	font-size: medium;
-	display: none;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.3s ease-out;
 }
 .blink {
 	-webkit-animation: blink .75s linear infinite;
@@ -174,9 +183,9 @@ opacity: 0;
 }
 
 #helpScr {
-	max-width: 1000px;
-	margin-left: auto;
-	margin-right: auto;
+	margin-left: 10%;
+	margin-right: 10%;
+	background-color: #ffffff;
 }
 #helpHeading {
 	color: green;
@@ -204,4 +213,27 @@ opacity: 0;
 }
 #userName {
 	text-align: center;
+}
+#helpMsg{
+	height: 40px;
+}
+#memoArea {
+//	display: none;
+}
+#moreAppsBtn {
+	font-size: small;
+}
+#safeSearchBtn {
+	font-size: small;
+}
+#memoBox {
+	height: 90px;
+	width: 280px;
+}
+#extraMasterBox {
+	width: 92%;
+}
+#extraMasterScr {
+	display: none;
+	width: 300px;
 }

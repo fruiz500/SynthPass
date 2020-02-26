@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SynthPass caged page</title>
+<meta name="Keywords" content="extension">
+<meta name="Description" content="Cage">
+<meta name="author" content="F. Ruiz">
+<meta name="robots" content="index">
+<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="passlok-touch-icon.png">
+<link rel="shortcut icon" type="image/x-icon" href="../img/icon16.png">
+
+<link rel="stylesheet" href="../css/cagestyle.css">
+
+</head>
+
+<body>
+<div id="topBar">
+  <button class="cssbutton" id="clearBtn" value="clear" title="clear URL (alt-R, ctrl-opt-R)" accesskey="R">Clea<b>R</b></button>
+  <input list="myApps" id="pageURL" title="Enter URL here" placeholder="Enter URL or select from list">
+  <datalist id="myApps">
+  	<option value="---Other Security Apps---">
+    <option value="PassLok">
+    <option value="Learn PassLok">
+    <option value="SeeOnce">
+    <option value="URSA">
+    <option value="Image Stego">
+    <option value="Human Encryption">
+    <option value="PassLok Gen. Directory">
+    <option value="---Secure Web Search---">
+    <option value="DuckDuckGo">
+    <option value="DisconnectMe">
+    <option value="Gibiru (safe Google)">
+    <option value="StartPage">
+    <option value="FindX">
+    <option value="Qwant">
+    <option value="SearX">
+    <option value="Wolfram Alpha">
+    <option value="GigaBlast">
+    <option value="SwissCows">
+    <option value="MetaGer">
+    <option value="Oscobo">
+  </datalist>
+  <button class="cssbutton" id="loadBtn" value="load" title="load page (alt-L, ctrl-opt-L)" accesskey="L"><b>L</b>oad</button>
+  <button class="cssbutton" id="hideBtn" value="hide" title="toggle this bar (alt-H, ctrl-opt-H)" accesskey="H"><b>H</b>ide</button>
+  <button class="cssbutton" id="helpBtn" value="help" title="click this if it isn't working (alt-P, ctrl-opt-P)" accesskey="P">Hel<b>P</b></button>
+  &nbsp;&nbsp;&nbsp;<span id="msgArea">Please enter the URL in the box and click Load. Click Hide to hide this bar.</span>
+  <div id="helpText">
+  <p>The page displayed is running in an isolated frame so no cookies are loaded, no history is recorded, and it is invisible to other extensions.</p>
+  <p>You type a new URL in the box, or select a PassLok web app or secure search engine from the drop-down list.</p>
+  <p>To load another page, refresh or click Clear. Links on page may load on a separate tab, but you can maintain security by right-clicking on them and selecting "Open Link in Cage."</p>
+  <p>This all works by loading the page into an iframe element in order to prevent other extensions from seeing anything typed into or produced by the page. Warning: this entails ignoring X-frame headers, which exposes the loaded page to clickjacking attacks.</p>
+  <p>Sometimes a website may refuse to load. In this case, you may want to install the "Ignore X-Frame headers" extension, from which this page has borrowed some code. This is the <a href="https://chrome.google.com/webstore/detail/ignore-x-frame-headers/gleekbfjekiniecknbkamfmkohkpodhe" target="_blank">link for Chrome</a>, and <a href="https://addons.mozilla.org/en-US/firefox/addon/ignore-x-frame-options-header/" target="_blank">for Firefox</a>.</p>
+  </div>
+</div>
+
+  <iframe seamless id="pageFrame" src="" border="none" margin=0 frameborder=0 allowfullscreen allow="microphone; camera"></iframe>
+
+<script src="../js-src/cagescript.js"></script>
+</body>
+</html>

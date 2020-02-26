@@ -1,10 +1,43 @@
 // This is the main code for SynthPass
 
 //global variables that will be used in computations
-var websiteName, pwdNumber = 0, cryptoStr = '';
+var websiteName, pwdNumber = 0, cryptoStr = '', masterPwd;
 
 //gets executed with the OK button
 function doStuff(e) {
+	if(memoArea.style.display == 'block'){					//save memo into field 4, along with everything else
+		if(websiteName){
+			if(!masterPwd){							//get master Password if not in memory
+				mainScr.style.display = 'none';
+				extraMasterScr.style.display = 'block';
+				extraMasterAction = 'encrypt';
+				extraMasterMsg.textContent = "Enter the master Password to save this note securely";
+				extraMasterBox.focus();
+				return
+			}
+			if(!memoBox.value.trim()){					//nothing to encrypt, so save an empty string
+				var crypto = ''
+			}else{											//now really encrypt
+				chrome.runtime.sendMessage({message: "preserve_master", masterPwd: masterPwd});
+				var	nonce = nacl.randomBytes(9),
+					nonce24 = makeNonce24(nonce),
+					plain =	 nacl.util.decodeUTF8(memoBox.value.trim()),
+					pwd2 = wiseHash(masterPwd,websiteName),
+					cipher = nacl.secretbox(plain,nonce24,pwd2),
+					crypto = nacl.util.encodeBase64(concatUint8Arrays(nonce,cipher)).replace(/=+$/,'');
+			}
+			var jsonfile = {};
+			jsonfile[websiteName] = [serial1.value,userID.value,pwdLength.value,cryptoStr,crypto];
+    		if(isEmptyJSON(jsonfile)){
+				chrome.storage.sync.remove(websiteName)
+			}else{
+    			chrome.storage.sync.set(jsonfile)
+			}
+		}
+		window.close();
+		return
+	}
+
 	var pwdStr1 = masterPwd1.value.trim(),			//get passwords and serials
 		serialStr1 = serial1.value.trim(),
 		pwdStr2 = masterPwd2.value.trim(),
@@ -13,7 +46,7 @@ function doStuff(e) {
 		serialStr3 = serial3.value,
 		pwdStr4 = masterPwd4.value.trim(),
 		serialStr4 = serial4.value,
-		userStr = userName.value.trim(),
+		userStr = userID.value.trim(),
 		lengthStr = pwdLength.value.replace(/ /g,'');
 		
 	if(pwdTable.style.display == 'block' && !pwdStr1 && row2.style.display == 'none'){		//no password in single box
@@ -50,7 +83,7 @@ function doStuff(e) {
 	mainMsg.appendChild(blinker);
 	
   setTimeout(function(){														//the rest after a 0 ms delay
-	if(pwdTable.style.display == 'block'){					//do passwords if the boxes are displayed, otherwise, just userName
+	if(pwdTable.style.display == 'block'){					//do passwords if the boxes are displayed, otherwise, just userID
 		var pwdOut = [],			//compute the new password into an array
 			newPwd = pwdSynth(1,pwdStr1,serialStr1,isPin,isAlpha);
 		if(!newPwd) return;								//bail out if just erasing stored password
@@ -78,9 +111,9 @@ function doStuff(e) {
 	  }
 		//send new passwords to page
 		if(userTable.style.display == 'block'){
-    		chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_OK", "passwords": pwdOut, "userName": userStr})
+    		chrome.tabs.sendMessage(activeTab.id, {message: "clicked_OK", passwords: pwdOut, userID: userStr})
 		}else{
-			chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_OK", "passwords": pwdOut})
+			chrome.tabs.sendMessage(activeTab.id, {message: "clicked_OK", passwords: pwdOut})
 		}
 		
 		setTimeout(function(){				//close window after 2 seconds in case the content script does not reply
@@ -88,6 +121,20 @@ function doStuff(e) {
 	  	}, 2000)
   },0);
 }
+
+//detect so empty sync entries can be removed
+function isEmptyJSON(jsonFile){
+	var isEmpty = true;
+	for(var name in jsonFile){
+		var length = jsonFile[name].length;
+		for(var i = 0; i < length; i++){
+			isEmpty = isEmpty && !jsonFile[name][i]
+		}
+	}
+	return isEmpty
+}
+
+var sitePwd = '';			//to store a user-given password
 
 //synthesizes a new password, or stores and retrieves one provided by user
 function pwdSynth(boxNumber, pwd, serial, isPin, isAlpha){
@@ -100,11 +147,15 @@ function pwdSynth(boxNumber, pwd, serial, isPin, isAlpha){
 		cryptoStr = '';					//reset stored password
 		serial = '';
 		serial1.value = ''; serial2.value = '';serial3.value = ''; serial4.value = '';
-		var userStr = userName.value.trim(),
+		var userStr = userID.value.trim(),
 			lengthStr = pwdLength.value.trim(),
 			jsonfile = {};
-		jsonfile[websiteName] = [serial,userStr,lengthStr,cryptoStr];		//and now erase from storage
-    	chrome.storage.sync.set(jsonfile);
+		jsonfile[websiteName] = [serial,userStr,lengthStr,cryptoStr,memoBox.value.trim()];		//and now erase from storage
+    	if(isEmptyJSON(jsonfile)){
+			chrome.storage.sync.remove(websiteName)
+		}else{
+    		chrome.storage.sync.set(jsonfile)
+		}
 		mainMsg.textContent = "The stored password has been deleted";
 		if(pwdNumber == 1){
 			return false
@@ -126,18 +177,22 @@ function pwdSynth(boxNumber, pwd, serial, isPin, isAlpha){
 				return false
 			}
 		}else{								//not stored or these are extra boxes, so ask for it, encrypt it, to be saved at the end
-			var plainStr = prompt("Please enter a password to remember for this website");
-			if(!plainStr){
-				mainMsg.textContent = "Password store canceled";
-				return false
+			if(!sitePwd){
+				mainScr.style.display = 'none';
+				extraMasterScr.style.display = 'block';
+				extraMasterAction = 'sitePwd';
+				extraMasterMsg.textContent = "Enter the Password that you want to use for this site";
+				extraMasterBox.focus();
+				return
 			}else{																	//encrypt user-supplied password
+				extraMasterAction = 'decrypt';
 				var	nonce = nacl.randomBytes(9),
 					nonce24 = makeNonce24(nonce),
-					plain =	 nacl.util.decodeUTF8(plainStr),
-					KeyDir = wiseHash(pwd,websiteName),
-					cipher = nacl.secretbox(plain,nonce24,KeyDir);
+					plain =	 nacl.util.decodeUTF8(sitePwd),
+					pwd2 = wiseHash(pwd,websiteName),
+					cipher = nacl.secretbox(plain,nonce24,pwd2);
 				cryptoStr = nacl.util.encodeBase64(concatUint8Arrays(nonce,cipher)).replace(/=+$/,'')
-				return plainStr
+				return sitePwd
 			}
 		}
 	//the rest of the options are synthesized through wiseHash
@@ -158,41 +213,44 @@ function pwdSynth(boxNumber, pwd, serial, isPin, isAlpha){
 	}
 }
 
-var bgPage = chrome.extension.getBackgroundPage();			//to cache the master password
-
 //what happens when the content script sends something back
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
 	  
-	if( request.message === "start_info" ) {							//initial message
+	if( request.message == "start_info" ) {							//initial message
 	  var hostParts = request.host.split('.');						//get name of the website, ignoring subdomains
 	  if(hostParts[hostParts.length - 1].length == 2 && hostParts[hostParts.length - 2].length < 4){			//domain name with second-level suffix
 		  	websiteName = hostParts.slice(-3).join('.')
 	  }else{
 	  		websiteName = hostParts.slice(-2).join('.')				//normal domain name
 	  }
+	  websiteURL = request.websiteURL;
 	  pwdNumber = Math.max(pwdNumber,request.number);
 	  isUserId = request.isUserId	;
 	  
 	  if(isUserId){								//userId field found, so display box, filled from storage
-	  		userTable.style.display = 'block';
-			okBtn.style.display = '';
-			mainMsg.textContent = "I cannot see a password to be filled, but there is an input that might take a user name"
+		  clearTimeout(startTimer);
+		  memoArea.style.display = 'none';
+	      userTable.style.display = 'block';
+		  okBtn.style.display = '';
+		  mainMsg.textContent = "I cannot see a password to be filled, but there is an input that might take a user name"
 	  }
 			
 	  if(pwdNumber){					             //password boxes found, so display the appropriate areas and load serial into first box
+		  clearTimeout(startTimer);
+		  memoArea.style.display = 'none';
 		  pwdTable.style.display = 'block';
 		  userTable.style.display = 'block';
-		  if(!isUserId){idLabel.style.display = 'none';userName.style.display = 'none';}		//don't display user ID box if no inputs
+		  if(!isUserId){idLabel.style.display = 'none';userID.style.display = 'none';}		//don't display user ID box if no inputs
 		  okBtn.style.display = '';
-		  bgPage = chrome.extension.getBackgroundPage();
-		  var prevPwd = bgPage.masterPwd;
-		  if(prevPwd){													//populate cached Master Password
-				showPwdMode1.style.display = 'none';
-				masterPwd1.value = prevPwd;	
-		  }
+			if(masterPwd){
+				masterPwd1.value = masterPwd;
+				showPwdMode1.style.display = 'none'
+			}else{
+				chrome.runtime.sendMessage({message: 'retrieve_master'})
+			}
 		  if(pwdNumber == 1){						//only one password box: display single input
-		  	  if(prevPwd){
+		  	  if(masterPwd){
 				  mainMsg.textContent = "Master Password still active; click OK"
 			  }else{
 				  mainMsg.textContent = "Enter Master Password and optional serial, click OK"
@@ -203,38 +261,50 @@ chrome.runtime.onMessage.addListener(
 			  if(pwdNumber >= 3){					//3 boxes
 				  row3.style.display = '';
 				  if(pwdNumber == 4){				//4 boxes, which is the max
-					  row4.style.display = '';
+					  row4.style.display = ''
 				  }else if(pwdNumber >= 5){		//too many boxes
 					  pwdTable.style.display = 'none';
 		  			  okBtn.style.display = 'none';
-					  mainMsg.textContent = "Too many password fields. Try filling them manually";
+					  mainMsg.textContent = "Too many password fields. Try filling them manually"
 				  }
 			  }	  
 		  }
 		  masterPwd1.focus()
 	  }
 
-	  //now get the serial from storage, and put it in the first serial box, and the userName in its place
-	  chrome.storage.sync.get(websiteName, function (obj){
-		var serialData = obj[websiteName];
-		if(serialData){
-			if(serialData[0]) serial1.value = serialData[0];			//populate serial box
-			if(serialData[1]) userName.value = serialData[1];		//and user ID regardless of whether it is displayed
-			if(serialData[2]) pwdLength.value = serialData[2];		//and password length, if any
-			if(serialData[3]) cryptoStr = serialData[3];				//put encrypted password, if any, in global variable
-		}
-	  });
+	  //now get the serial from storage, and put it in the first serial box, and the userID in its place
+	  if(isUserId || pwdNumber){
+			chrome.storage.sync.get(websiteName, function (obj){
+				var serialData = obj[websiteName];
+				if(serialData){
+					if(serialData[0]) serial1.value = serialData[0];			//populate serial box
+					if(serialData[1]) userID.value = serialData[1];		    //and user ID regardless of whether it is displayed
+					if(serialData[2]) pwdLength.value = serialData[2];		//and password length, if any
+					if(serialData[3]) cryptoStr = serialData[3]				//put encrypted password, if any, in global variable	
+				}
+		  });
+	  }
 	  
 	  //close everything and erase cached Master Password after five minutes
 	  setTimeout(function(){
-		  bgPage.masterPwd = '';
-		  window.close();
+		  masterPwd = '';
+		  chrome.runtime.sendMessage({message: "reset_now"});
+		  window.close()
 	  }, 300000)
-    }
+	  
+	}else if(request.message == "master_fromBg"){		//get master from background page
+		if(request.masterPwd){
+			masterPwd = request.masterPwd;
+			masterPwd1.value = masterPwd;
+			showPwdMode1.style.display = 'none'
+		}
+		
+	}else if(request.message == "delete_master"){
+		masterPwd = ''
 
- 	if( request.message === "done" ) {				//done, so store the serial, if any, of the password that has focus, plus the user name
+	}else if( request.message == "done" ) {				//done, so store the serial, if any, of the password that has focus, plus the user name
     	var	serialStr = document.getElementById("serial" + lastFocus).value.trim(),
-			userStr = userName.value.trim()
+			userStr = userID.value.trim()
 			lengthStr = pwdLength.value.trim();
 		if(serialStr == '-') serialStr = '';										//don't store '-' serial
 		
@@ -242,16 +312,19 @@ chrome.runtime.onMessage.addListener(
 			chrome.storage.sync.remove(websiteName);
 		}else{													//otherwise store serial, user name, password length, and encrypted password, if any
 			var jsonfile = {};
-			jsonfile[websiteName] = [serialStr,userStr,lengthStr,cryptoStr];
-    		chrome.storage.sync.set(jsonfile)
+			jsonfile[websiteName] = [serialStr,userStr,lengthStr,cryptoStr,memoBox.value.trim()];
+    		if(isEmptyJSON(jsonfile)){
+				chrome.storage.sync.remove(websiteName)
+			}else{
+    			chrome.storage.sync.set(jsonfile)
+			}
 		}
 
 		var	pwdStr = document.getElementById("masterPwd" + lastFocus).value;
 		if(pwdStr){
-			bgPage = chrome.extension.getBackgroundPage();
-			bgPage.masterPwd = pwdStr;					//store master password between popup loads; auto timer is set in bodyscript.js
-			bgPage.pwdTime = new Date().getTime();
-			chrome.runtime.sendMessage({"message": "reset_timer"})			//reset auto timer on background page
+			masterPwd = pwdStr;
+			chrome.runtime.sendMessage({message: "reset_timer"});			//reset auto timer on background page
+			chrome.runtime.sendMessage({message: "preserve_master", masterPwd: masterPwd})
 		}
 
 		window.close()
@@ -259,26 +332,82 @@ chrome.runtime.onMessage.addListener(
   }
 )
 
+//called if there is no meaningful response from the content script
+function showMemo(name){
+	websiteName = name;
+	if(!memoBox.value.trim()) fetchWebsiteMemo();						//look for stored memo if there's none displayed
+	userTable.style.display = 'none';
+	pwdTable.style.display = 'none';
+	memoArea.style.display = 'block';
+	okBtn.textContent = 'Save';
+	synthTitle.textContent = "SynthPass notes";
+	memoBox.focus()
+}
 
 //fetches userId and displays in box so it can be added
 function fetchUserId(){
 	userTable.style.display = 'block';
 	lengthLabel.style.display = 'none';
 	pwdLength.style.display = 'none';
-	okBtn.style.display = '';
 	mainMsg.textContent = "There was no user ID stored";
+	memoArea.style.display = 'none';
+	okBtn.textContent = 'OK';
 
-	//now get the userName from storage, and put it in its place
+	//now get the userID from storage, and put it in its place
 	chrome.storage.sync.get(websiteName, function (obj){
 		var serialData = obj[websiteName];
 		if(serialData){
-			if(serialData[1]) userName.value = serialData[1]		//fill user ID
+			if(serialData[1]) userID.value = serialData[1]		//fill user ID
 		}
 		mainMsg.textContent = "Click OK to put it in the page"
 	})
 }
 
-var hashiliOn = false;			//default to not showing hashili
+var memoCipher = '';					//container for encrypted note
+
+//fetches other info
+function fetchWebsiteMemo(){
+	chrome.storage.sync.get(websiteName, function (obj){
+		if(!memoBox.value.trim()){							//do the following only if not filled already
+			var serialData = obj[websiteName];
+			if(serialData){												//need to get everything in case it is saved
+				if(serialData[0]) serial1.value = serialData[0];			//populate serial box
+				if(serialData[1]) userID.value = serialData[1];		//and user ID regardless of whether it is displayed
+				if(serialData[2]) pwdLength.value = serialData[2];		//and password length, if any
+				if(serialData[3]){cryptoStr = serialData[3]}else{cryptoStr = ''};	//put encrypted password, if any, in global variable
+				if(serialData[4]) memoCipher = serialData[4];		//get memo, in case there's one
+			}
+
+//the rest is to decrypt an encrypted note		
+			if(memoCipher){
+				if(!masterPwd){														//get master Password if not in memory
+					mainScr.style.display = 'none';
+					extraMasterScr.style.display = 'block';
+					extraMasterAction = 'decrypt';
+					extraMasterMsg.textContent = "Enter the master Password in order to see its secure note";
+					extraMasterBox.focus();
+					return
+				}
+				var cipher = nacl.util.decodeBase64(memoCipher);
+				if(!cipher) return false;
+				var	nonce = cipher.slice(0,9),												//no marker byte
+					nonce24 = makeNonce24(nonce),
+					cipher2 = cipher.slice(9),
+					pwd2 = wiseHash(masterPwd,websiteName),
+					plain = nacl.secretbox.open(cipher2,nonce24,pwd2);
+				if(plain){
+					chrome.runtime.sendMessage({message: "preserve_master", masterPwd: masterPwd});
+					memoBox.value = nacl.util.encodeUTF8(plain)
+				}else{
+					masterPwdMsg.textContent = "Decryption of secure note has failed";
+					memoBox.value = ''
+				}
+			}else{
+				mainMsg.textContent = "There's no secure note for " + websiteName + " but you can write one in the box";
+			}
+		}
+	})
+}
 
 
 //this for showing and hiding text in the Password boxes
@@ -287,11 +416,42 @@ function showPwd(number){
 		imgEl = document.getElementById('showPwdMode' + number);
 	if(pwdEl.type == "password"){
 		pwdEl.type = "text";
-		imgEl.src = "images/hide-24.png"
+		imgEl.src = "../img/hide-24.png"
 	}else{
 		pwdEl.type = "password";
-		imgEl.src = "images/eye-24.png"
+		imgEl.src = "../img/eye-24.png"
 	}
+}
+
+var extraMasterAction = 'decrypt';				//so the next function knows what to do after loading the master Password
+
+function acceptextraMaster(){
+	var pwd = extraMasterBox.value.trim();
+	extraMasterBox.value = '';
+	extraMasterScr.style.display = 'none';
+	mainScr.style.display = 'block';
+	if(extraMasterAction == 'decrypt'){
+		masterPwd = pwd;
+		fetchWebsiteMemo()
+	}else if(extraMasterAction == 'encrypt'){
+		masterPwd = pwd;
+		doStuff()
+	}else if(extraMasterAction == 'sitePwd'){
+		sitePwd = pwd;
+		doStuff()
+	}
+}
+
+function cancelextraMaster(){
+	if(extraMasterAction == 'decrypt'){
+		mainMsg.textContent = "Secure note not decrypted"
+	}else if(extraMasterAction == 'encrypt'){
+		mainMsg.textContent = "Secure note not saved"
+	}else if(extraMasterAction == 'sitePwd'){
+		mainMsg.textContent = "User-supplied password not saved"
+	}
+	extraMasterScr.style.display = 'none';
+	mainScr.style.display = 'block';
 }
 
 var lastFocus = '1';			//default is first row
@@ -315,6 +475,24 @@ function pwdKeyup(evt){
 		 }
 	}
 }
+
+function extraMasterKeyup(evt){
+	evt = evt || window.event;
+	var key = evt.keyCode || evt.which || evt.keyChar,
+		pwdEl = document.activeElement;
+	lastFocus = pwdEl.id.slice(-1);					//get last focused row
+	if(key == 13){acceptextraMaster()} else{
+		 if(pwdEl.value.trim()){
+			 keyStrength(pwdEl.value,true,false)
+		 }else{
+			 extraMasterMsg.textContent = "Please enter the Password";
+			 extraMasterMsg.style.color = '';
+			 hashili('extraPwdMsg','')
+		 }
+	}
+}
+
+
 function userKeyup(evt){
 	evt = evt || window.event;
 	var key = evt.keyCode || evt.which || evt.keyChar;
@@ -325,7 +503,8 @@ function userKeyup(evt){
 var vowel = 'aeiou',
 	consonant = 'bcdfghjklmnprstvwxyz',
 	hashiliTimer;
-function hashili(msgID,string){
+
+function hashili(string, msgID){
 	var element = document.getElementById(msgID);
 	clearTimeout(hashiliTimer);
 	hashiliTimer = setTimeout(function(){
@@ -341,8 +520,7 @@ function hashili(msgID,string){
 				output += consonant[Math.floor(remainder / 5)] + vowel[remainder % 5];
 				code10 = (code10 - remainder) / 100
 			}
-//	return output
-			element.textContent += '\r\n' + output
+			element.innerText += '\n' + output
 		}
 	}, 1000);						//one second delay to display hashili
 }
@@ -419,11 +597,15 @@ function keyStrength(pwd,display,isHelp) {
 		if(isHelp){
 			helpMsg.textContent = msg;
 			helpMsg.style.color = colorName;
-			hashili('helpMsg',pwd)			
+			hashili(pwd, 'helpMsg')			
+		}else if(extraMasterScr.style.display == 'block'){
+			extraMasterMsg.textContent = msg;
+			extraMasterMsg.style.color = colorName;
+			hashili(pwd, 'extraMasterMsg')
 		}else{
 			mainMsg.textContent = msg;
 			mainMsg.style.color = colorName;
-			hashili('mainMsg',pwd)
+			hashili(pwd, 'mainMsg')
 		}
 	}
 	return iter

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SynthPass Password Synthesizer</title>
+<meta name="Keywords" content="steganography, F5, passlok, URSA, browser, encryption, decryption, symmetric, public key, signature, AES, ECDH, Diffie, Hellman, elliptic curve, advanced, javascript, PGP, PRISM">
+<meta name="Description" content="SynthPass Password Synthesizer">
+<meta name="author" content="F. Ruiz">
+<meta name="robots" content="index">
+<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<!--Default stylesheet containing the Light color scheme-->
+<link rel="stylesheet" href="../css/style.css">
+
+<!--License notice and SSL force-->
+<script src="../js-src/license.js"></script>
+
+<!--this only loads two regular expressions: blackListExp and wordListExp, plus their lengths-->
+<script src="../js-src/dictionary_en.js"></script>
+
+<!--TweetNaCl crypto library 1.0.1 by Dmitry Chestnykh. https://github.com/dchest/tweetnacl-js-->
+<script src="../js-lib/nacl.js"></script>
+
+<!--scrypt-async-js KDF 2.0.1 by Dmitry Chestnykh. https://github.com/dchest/scrypt-async-js-->
+<script src="../js-lib/scrypt-async.js"></script>
+
+<!--this used to be in TweetNaCl, but they dropped it-->
+<script src="../js-src/nacl-util.js"></script>
+
+<!--code specific to this HTML document-->
+<!--based on WiseHash, by yours truly. https://github.com/fruiz500/wisehash-->
+<script src="../js-src/main.js"></script>
+
+</head>
+
+<body>
+
+<!--this screen contains most everything-->
+<div class="screen" id="mainScr" width="300px">
+<h3 id="synthTitle">SynthPass passwords</h3>
+<div id="mainMsg" class="message" title="messages appear here"><span id="failMsg">I cannot see a password to be filled, so here are your notes on this website.<br>click me for user ID</span></div><br>
+<div id="memoArea" align="center">
+<button class="cssbutton" id="cageBtn" title="isolates the page from cookies etc.">Isolate Page</button>
+<br><br>
+<textarea id="memoBox" rows="5" class="cssbox" placeholder="Write your notes here. They will be stored, but not securely."></textarea></div>
+<table width="300px" id="userTable">
+<tr>
+<td><span id="idLabel">User ID:</span></td>
+<td><input type="text" class="cssbox" id="userID" title="optional user ID" placeholder="user ID here"/></td>
+<td width="5%"><span id="lengthLabel">&nbsp;length</span></td>
+<td width="18%"><input type="text" class="cssbox" id="pwdLength" title="password length (default 44); begin with 'pin' for numeric output; special characters allowed"/></td>
+</tr>
+</table>
+<table width="300px" id="pwdTable">
+<tr>
+<th>
+<span id="pwdLabel" title="a mnemonic word appears here as you type"=>Master Password</span>
+</th>
+<th>
+</th>
+<th>
+<span title="add a serial to change output with same Master Password">Serial</span>
+</th>
+</tr>
+<tr>
+<td width="75%">
+<input type="password" class="cssbox" id="masterPwd1" title="type Master Password here" placeholder="password here"/><img id="showPwdMode1" class="field-icon" src="../img/eye-24.png" title="click this to see/hide the Password">
+</td>
+<td width="5%" align="center">
+</td>
+<td width="20%">
+<input type="text" class="cssbox" id="serial1" title="add optional serial"/>
+</td>
+</tr>
+<tr id="row2">
+<td width="75%">
+<input type="password" class="cssbox" id="masterPwd2" title="type master password here" placeholder="password here"/><img id="showPwdMode2" class="field-icon" src="../img/eye-24.png" title="click this to see/hide Hashili and Password">
+</td>
+<td width="5%" align="center">
+</td>
+<td width="20%">
+<input type="text" class="cssbox" id="serial2" title="add optional serial"/>
+</td>
+</tr>
+<tr id="row3">
+<td width="75%">
+<input type="password" class="cssbox" id="masterPwd3" title="type Master Password here" placeholder="password here"/><img id="showPwdMode3" class="field-icon" src="../img/eye-24.png" title="click this to see/hide the Password">
+</td>
+<td width="5%" align="center">
+</td>
+<td width="20%">
+<input type="text" class="cssbox" id="serial3" title="add optional serial"/>
+</td>
+</tr>
+<tr id="row4">
+<td width="75%">
+<input type="password" class="cssbox" id="masterPwd4" title="type Master Password here" placeholder="password here"/><img id="showPwdMode4" class="field-icon" src="../img/eye-24.png" title="click this to see/hide the Password">
+</td>
+<td width="5%" align="center">
+</td>
+<td width="20%">
+<input type="text" class="cssbox" id="serial4" title="add optional serial"/>
+</td>
+</tr>
+</table>
+<br>
+  &nbsp;
+<button class="cssbutton" id="okBtn" value="OK" title="OK (alt-O)" accesskey="o">OK</button>
+  &nbsp;
+<button class="cssbutton" id="cancelBtn" value="Cancel" title="Cancel (alt-C)" accesskey="c">Cancel</button>
+  &nbsp;
+ <button class="cssbutton" id="helpBtn" value="Help" title="get Help (alt-H)" accesskey="h">Help</button>
+</div>
+
+<!--extra master Password input-->
+<div class="screen" id="extraMasterScr" align="center">
+	<p id="extraMasterMsg" class="message">Enter the master Password to save this note securely<br>If empty, it will be saved in plaintext</p>
+	<input type="password" class="cssbox" id="extraMasterBox" name="key"/>
+	<img id="extraMasterIcon" class="field-icon" src='../img/eye-24.png' title="click this to see/hide the Password">
+	<br><br>
+    <button class="cssbutton" id="acceptExtraMasterBtn" value="OK" title="go on">OK</button>&nbsp;&nbsp;
+	<button class="cssbutton" id="cancelExtraMasterBtn" value="Cancel" title="stop and go back">Cancel</button>
+</div>
+
+<!--Body script: window reformatting, button event listeners-->
+<script src="../js-src/bodyscript.js"></script>
+
+</body>
+</html>

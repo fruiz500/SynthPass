@@ -8,7 +8,7 @@ function isHidden(el) {
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
 	 
-    if( request.message === "start" ) {				//find password and text fields and send number of them to frontend, plus host name
+    if( request.message == "start" ) {				//find password and text fields and send number of them to frontend, plus host name
 		pwdId = [];										//global variables  that will be used later
 		textId = [];
 
@@ -34,19 +34,19 @@ chrome.runtime.onMessage.addListener(
 		}
 
 		//send data to the popup
-   		chrome.runtime.sendMessage({"message": "start_info", "host": document.location.host, "number": pwdId.length, "isUserId": userDone})
+   		chrome.runtime.sendMessage({message: "start_info", host: document.location.host, websiteURL: document.location.href, number: pwdId.length, isUserId: userDone})
     }
 	
-	if( request.message === "clicked_OK" ) {							//insert passwords coming from frontend into boxes
+	if( request.message == "clicked_OK" ) {							//insert passwords coming from frontend into boxes
 		var passwords = request.passwords;
 		if(passwords){
 			for(var i = 0; i < passwords.length; i++){
 				pwdId[i].value = passwords[i];
 			}
 		}
-		if(request.userName){
+		if(request.userID){
 			if(passwords && textId[0]){
-				textId[0].value = request.userName;			//insert user name
+				textId[0].value = request.userID;			//insert user name
 			}else{												//userId without pwd; find it and fill the last one
 				textId = [];
 				var inputElements = document.querySelectorAll("input[type='text'], input[type='email']");
@@ -55,12 +55,12 @@ chrome.runtime.onMessage.addListener(
 						textId.push(inputElements[i])
 					}
 				}
-				if(textId[0]) textId[textId.length - 1].value = request.userName
+				if(textId[0]) textId[textId.length - 1].value = request.userID
 			}
 		}
 
 		//tell the popup it can close
-		chrome.runtime.sendMessage({"message": "done"})
+		chrome.runtime.sendMessage({message: "done"})
 	}
   }
 )

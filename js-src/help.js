@@ -1,18 +1,3 @@
-//for opening one item at a time in the Help screen
-function openHelp(theID){
-	var helpItems = document.getElementsByClassName('helptext');	//hide all help texts
-	for(var i=0; i < helpItems.length; i++){
-		helpItems[i].style.display = 'none'
-	}
-	document.getElementById(theID).style.display = "block";		//except for the one clicked
-
-	if(typeof window.orientation != 'undefined'){					//scroll to the item on Mobile
-		location.href = '#';
-		location.href = '#a' + theID;
-	}
-	outputBox.textContent = ''							//delete password displayed here, for good measure
-}
-
 //to select the result
 function copyOutput(){
   if(outputBox.textContent.trim() != ''){
@@ -37,7 +22,7 @@ function copyOutput(){
 //this part of the code is to synthesize passwords using the fields in the last Help item
 function doStuffHelp(e) {
 	websiteName = siteName.value.toLowerCase();			//get all the data
-	var	pwdStr = masterPwd.value,	
+	var	pwdStr = masterPwdHelp.value,	
 		serialStr = serial.value,
 		lengthStr = pwdLength.value.replace(/ /g,'');
 		
@@ -82,8 +67,8 @@ function doStuffHelp(e) {
 	
 	setTimeout(function(){														//the rest after a 10 ms delay
 		helpMsg.textContent = "Password synthesized. Copy it now";
-		outputBox.textContent = pwdSynth(pwdStr,serialStr,isPin,isAlpha).slice(0,lengthStr);
-		masterPwd.value = '';
+		outputBox.textContent = pwdSynth(2,pwdStr,serialStr,isPin,isAlpha).slice(0,lengthStr);
+		masterPwdHelp.value = '';
 		siteName.value = '';
 		websiteName = '';
 		pwdLength.value = '';
@@ -96,8 +81,8 @@ function pwdKeyupHelp(evt){
 	evt = evt || window.event;
 	var key = evt.keyCode || evt.which || evt.keyChar;
 	if(key == 13){doStuff()} else{
-		 if(masterPwd.value){
-			 keyStrength(masterPwd.value,true,true)
+		 if(masterPwdHelp.value){
+			 keyStrength(masterPwdHelp.value,true,true)
 		 }else{
 			 helpMsg.textContent = "Please enter the Master Password"
 		 }
@@ -109,18 +94,29 @@ function outputKeyup(){
 	helpMsg.textContent = "Output is " + outputBox.textContent.length + " characters long"
 }
 
+//for opening one item at a time in the Help screen, with animation
+function openHelp(){
+	var helpItems = document.getElementsByClassName('helpitem');
+	for(var i = 0; i < helpItems.length; i++){					//hide all help texts
+		var panel = helpItems[i].nextElementSibling;
+		panel.style.maxHeight = null;
+	}
+	var panel = this.nextElementSibling;							//except for the one clicked
+	panel.style.maxHeight = panel.scrollHeight + "px"	     
+}
+
 //add event listeners
 window.onload = function() {
 	var helpHeaders = document.getElementsByClassName("helpitem");		//add listeners to all the help headers
-
 	for (var i = 0; i < helpHeaders.length; i++) {
-		helpHeaders[i].addEventListener('click', function(){openHelp(this.id.slice(1))});
+		helpHeaders[i].addEventListener('click', openHelp);
 	}
 	
+	document.body.style.backgroundColor = 'white';
 	okBtn.addEventListener('click', doStuffHelp);								//execute
-	showPwdMode.addEventListener('click', function(){showPwd('Help')});
+	showPwdModeHelp.addEventListener('click', function(){showPwd('Help')});
 	copyBtn.addEventListener('click', copyOutput);
 	
-	masterPwd.addEventListener('keyup', pwdKeyupHelp, false);
+	masterPwdHelp.addEventListener('keyup', pwdKeyupHelp, false);
 	outputBox.addEventListener('keyup', outputKeyup, false)
 }
