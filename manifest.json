@@ -3,19 +3,17 @@
   "short_name": "SynthPass",
   "description": "High-security password synthesizer", 
   "omnibox": { "keyword" : "src" },
-  "version": "0.2.1",
+  "version": "0.2.3",
   "manifest_version": 2,
   "icons": {
-  "16": "img/icon16.png",
-  "48": "img/icon48.png",
-  "128": "img/icon128.png"
+    "16": "img/icon16.png",
+    "48": "img/icon48.png",
+    "128": "img/icon128.png"
   },
   "permissions": [
     "storage", "activeTab",
-	"webRequest",
-	"webRequestBlocking",
-	"contextMenus", "history",
-	"<all_urls>"
+    "webRequest", "webRequestBlocking",
+    "contextMenus", "history"
   ],
   "content_security_policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; frame-src 'self' https://* http://*",
   "background": {
@@ -23,20 +21,12 @@
     "persistent": true
   },
   "browser_action": {
-        "default_icon": {
-        "16": "img/icon16.png",
-        "48": "img/icon48.png",
-        "128": "img/icon128.png"
-        },
-        "default_title": "SynthPass",
-        "default_popup": "html/popup.html"
-  },
-  "content_scripts": [{
-      "matches": [
-        "<all_urls>"
-      ],
-	  "all_frames": true,
-      "js": [
-	  "js-src/content.js"]
-    }]
+    "default_icon": {
+      "16": "img/icon16.png",
+      "48": "img/icon48.png",
+      "128": "img/icon128.png"
+    },
+    "default_title": "SynthPass",
+    "default_popup": "html/popup.html"
+  }
 }

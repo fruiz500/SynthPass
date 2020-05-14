@@ -18,7 +18,6 @@ chrome.runtime.onMessage.addListener(
       }
 );
 
-//var bgPage = chrome.extension.getBackgroundPage(),
 var masterPwd,
 	pwdTimer = 0;
 	
@@ -26,7 +25,6 @@ function resetPwdTimer(){
 	var period  = 300000;
 	clearTimeout(pwdTimer);
 	pwdTimer = setTimeout(function(){
-//		bgPage.masterPwd = '';
 		resetNow();
 		chrome.runtime.sendMessage({message: 'delete_master'})		//also delete in popup
 	}, period)

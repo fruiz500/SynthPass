@@ -1,10 +1,12 @@
 window.onload = function() {
 
 	//button listeners
-	okBtn.addEventListener('click', doStuff);					//execute the action
+	okBtn.addEventListener('click', function(){doStuff(false)});				//execute the action. No clipboard copy
 	row2.style.display = 'none';
 	row3.style.display = 'none';
 	row4.style.display = 'none';
+
+	clipbdBtn.addEventListener('click', function(){doStuff(true)});			//same as above, but set a flag so result is copied to clipboard as well
 
 	cancelBtn.addEventListener('click', function(){window.close()});		//quit
 
@@ -42,7 +44,12 @@ window.onload = function() {
 
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {	//find the id of the current tab and tell script to count password boxes
     	activeTab = tabs[0];
-		chrome.tabs.sendMessage(activeTab.id, {"message": "start"});		//collect statistics from content script, also wake background page
+
+//load content script programmatically (needs activeTab permission)
+		chrome.tabs.executeScript({
+			file: 'js-src/content.js',
+			allFrames: true
+		});
 
 //the rest in case there's no meaningful reply from the content script
 		if(activeTab.url){
