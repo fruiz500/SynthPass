@@ -18,7 +18,7 @@ SynthPass is based on the WiseHash key-stretching algorithm, also available at G
 
 This is a browser extension, and therefore is poorly supported on mobile devices. There is, however, a web app that includes the same password-making engine and runs well on mobile devices. It can be found at:
 
-https://synthpass.com/app
+https://synthpass.com/app  and also at https://github.com/fruiz500/synthpass-standalone
 
 # Credits:
 - smart Password engine based on WiseHash by F. Ruiz 2014: https://github.com/fruiz500/wisehash
