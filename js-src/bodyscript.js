@@ -11,20 +11,20 @@ window.onload = function() {
 	cancelBtn.addEventListener('click', function(){window.close()});		//quit
 
     helpBtn.addEventListener('click', function(){chrome.tabs.create({url: '/html/help.html'});});		//open tab with help items
-	
+
 	failMsg.addEventListener('click', fetchUserId);				//fetch userID anyway and display
 
 	showPwdMode1.addEventListener('click', function(){showPwd('1')});				//toggle visibility of the passwords
 	showPwdMode2.addEventListener('click', function(){showPwd('2')});
 	showPwdMode3.addEventListener('click', function(){showPwd('3')});
 	showPwdMode4.addEventListener('click', function(){showPwd('4')});
-	
+
 	for(var i = 1; i < 4; i++){
 		document.getElementById('masterPwd' + i.toString()).addEventListener('keyup', pwdKeyup);
 		document.getElementById('masterPwd' + i.toString()).addEventListener('focus', function(){var master = masterPwd1.value; if(master) keyStrength(master,true)});
 		document.getElementById('serial' + i.toString()).addEventListener('focus', function(){lastFocus = i.toString()})
 	}
-	
+
 	cancelExtraMasterBtn.addEventListener('click',cancelextraMaster);
 	acceptExtraMasterBtn.addEventListener('click',acceptextraMaster);
 	extraMasterIcon.addEventListener('click',function(){showPwd('extraMaster')});
