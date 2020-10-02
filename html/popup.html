@@ -2,7 +2,7 @@
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>SynthPass Password Synthesizer</title>
+<title>SynthPass Passwords</title>
 <meta name="Keywords" content="steganography, F5, passlok, URSA, browser, encryption, decryption, symmetric, public key, signature, AES, ECDH, Diffie, Hellman, elliptic curve, advanced, javascript, PGP, PRISM">
 <meta name="Description" content="SynthPass Password Synthesizer">
 <meta name="author" content="F. Ruiz">
@@ -27,7 +27,7 @@
 <script src="../js-lib/scrypt-async.js"></script>
 
 <!--this used to be in TweetNaCl, but they dropped it-->
-<script src="../js-src/nacl-util.js"></script>
+<script src="../js-lib/nacl-util.js"></script>
 
 <!--code specific to this HTML document-->
 <!--based on WiseHash, by yours truly. https://github.com/fruiz500/wisehash-->
@@ -39,7 +39,7 @@
 
 <!--this screen contains most everything-->
 <div class="screen" id="mainScr" width="300px">
-<h3 id="synthTitle">SynthPass passwords</h3>
+<h3 id="synthTitle">SynthPass Passwords</h3>
 <div id="mainMsg" class="message" title="messages appear here"><span id="failMsg">I cannot see a password to be filled, so here are your notes on this website.<br>click me for user ID</span></div><br>
 <div id="memoArea" align="center">
 <button class="cssbutton" id="cageBtn" title="isolates the page from cookies etc.">Isolate Page</button>
@@ -109,7 +109,9 @@
   &nbsp;
 <button class="cssbutton" id="okBtn" value="OK" title="OK (alt-O)" accesskey="o">OK</button>
   &nbsp;
-<button class="cssbutton" id="cancelBtn" value="Cancel" title="Cancel (alt-C)" accesskey="c">Cancel</button>
+<button class="cssbutton" id="cancelBtn" value="Cancel" title="Cancel (alt-K)" accesskey="k">Cancel</button>
+  &nbsp;
+<button class="cssbutton" id="clipbdBtn" value="to Clipbd" title="OK and copy to clipboard (alt-C)" accesskey="c">&#9658; Clip</button>
   &nbsp;
  <button class="cssbutton" id="helpBtn" value="Help" title="get Help (alt-H)" accesskey="h">Help</button>
 </div>

@@ -17,6 +17,9 @@
 <!--scrypt-async-js KDF by Dmitry Chestnykh. https://github.com/dchest/scrypt-async-js-->
 <script src="../js-lib/scrypt-async.js"></script>
 
+<!--this used to be in TweetNaCl, but they dropped it-->
+<script src="../js-lib/nacl-util.js"></script>
+
       </head>
       <body>
 <div id="helpScr">
@@ -50,7 +53,7 @@
     <ol>
       <li>Click the SynthPass logo.</li>
       <li>A popup box will appear, containing writable boxes for your Master Password and an optional serial, plus the user ID if there is a single extra box on the webpage, and the password length (default is 44). The serial box will be filled already if you used a serial on this website before, as well as the user ID and the length etc.. If you have used your Master Password within the last five minutes, this box will be filled also. To make a PIN consisting only of digits, type 'pin' in the <em>length</em> box (default is 4 digits), or 'pin6' (6 digits) and so forth.</li>
-      <li>Type in your Master Password if needed. As you type, its strength and entropy are displayed near the top of the dialog. If you stop typing for a second, a mnemonic "Hashili" word is displayed in the message area to reassure you that your typed it correctly. Clicking the eye icon reveals the complete password. When you are satisfied, click <strong>OK</strong> or press the <strong>Enter</strong> key.</li>
+      <li>Type in your Master Password if needed. As you type, its strength and entropy are displayed near the top of the dialog. If you stop typing for a second, a mnemonic "Hashili" word is displayed in the message area to reassure you that your typed it correctly. Clicking the eye icon reveals the complete password. When you are satisfied, click <strong>OK</strong> or press the <strong>Enter</strong> key. If you want the password to be copied to clipboard as well, click the <b>&#9658; Clip</b> button instead.</li>
       <li>When the popup disappears, the password and user ID fields on the webpage will be filled, but login has not yet taken place. Proceed from this point on as if you had typed in user ID and password directly into the webpage. Sometimes a website requires that you physically type something in the password box; in this case it is enough to click in the middle of the password (which you won't see), type a character, and then immediately press the Delete or Backspace key to remove it.</li>
     </ol>
     <p>If the popup says that it cannot see the password field or displays more than one box for the Master Password, you may need to paste in the synthesized password manually. The process for this is explained two Help items below this one.</p>
@@ -160,6 +163,19 @@ Output
     <p>For example, entering &quot;30 numbers&quot; (again, no quotes) in the Length box, causes the generated password to contain 30 numerical digits, and no letters or special characters. If you enter &quot;@$%*&amp;&quot; (no quotes) the generated password will be the default 44 characters long and will be composed of letters (smallcase and capitals), numbers, and those special characters (and no others). If you write &quot;alphabetic 25&quot; (no quotes), the generated password will contain a total of 25 letters (small and capitals) and numbers, with no special characters.</p>
   </div>
   <hr>
+    <h3 class="helpitem">Can I use SynthPass as a regular password manager?</h3>
+  <div class="helptext">
+    <p>Even though the strength of SynthPass is in generating high-strength passwords<a href="https://www.youtube.com/watch?v=Y5jwImGkzCc" target="_blank"></a> for you, it will accept and remember a password you supply, like typical password managers. Unlike those, however, SynthPass does not store passwords in &quot;the cloud&quot; (actually, someone's for-profit server farm in a location you don't know). Rather, SynthPass encrypts user-supplied passwords with the Master Password, and stores them within the browser data, which gets synced automatically when you log into Chrome or Firefox on a new machine.</p>
+    <p>Storing your own password is as easy as entering a + sign in the serial box, plus the Master Password in its own box. When you click OK, a popup asks you for the password you want to store. Since SynthPass remembers the content of the serial box, it will remember that you have a user-supplied password for that website, which it will decrypt and paste into the page exactly as if it had been a synthetic password.</p>
+    <p>To stop using a stored password for a given login, enter a - sign in the serial box, which will decrypt it one last time and then delete the encrypted password from browser storage.</p>
+  </div>
+  <hr>
+    <h3 class="helpitem">What if there is no password to fill?</h3>
+  <div class="helptext">
+    <p>In that case, SynthPass will offer to store, or will reveal if already stored, a note for that page. Notes are stored encrypted, so SynthPass will ask you for your Master Password if you have not used it within the last five minutes. Stored encrypted notes are kept with the browser data and sync across machines without using &quot;the cloud.&quot; This may be a good place to write instructions or other data needed to complete a login.</p>
+    <p>There's also a button that will re-load the page inside the extension, so that other extensions won't have access to it, and the browser won't record any action you do on it. Think of it as a per-page incognito or private mode. This feature is also available for any link, via the right-click menu. If you want page isolation but don't care about filling passwords, you may want to check out Page Cage, also available in this extension store.</p>
+  </div>
+  <hr>
     <h3 class="helpitem">Can I use SynthPass on my smartphone?</h3>
   <div class="helptext">
     <p>At the moment SynthPass is a browser extension for Chrome and Firefox, and the only mobile browser that supports extensions is Firefox on Android. But you are not stuck being unable to log into that critical website just because of this. We have made a webpage that will synthesize the same password if you just provide the website name, any special options, the serial if any, and of course your Master Password. You can save it to Home Page and run it offline if you like. Here's the address:</p>
@@ -167,7 +183,7 @@ Output
     <p>This is also explained, among other things, in this YouTube video: <a href="https://www.youtube.com/watch?v=Y5jwImGkzCc" target="_blank">https://www.youtube.com/watch?v=Y5jwImGkzCc</a></p>
   </div>
   <hr>
-    <h3 class="helpitem">I want to learn more about SynthPass</h3>
+  <h3 class="helpitem">I want to learn more about SynthPass</h3>
   <div class="helptext">
   <p>Here are more technical details. SynthPass generates 256-bit passwords that are converted to base64, so we end up with 44 alphanumeric characters. Some of those are later converted to other characters that are typically accepted in passwords, in order to satisfy common password requirements. The 256-bit passwords are the result of running a variable number of SCRYPT iterations on the Master Password, with the website name and serial appended to it. The SCRYPT implementation used is the one by D. Chestnykh, which is in turn based on the NaCl crypto library. The number of SCRYPT iterations is a function of the entropy of the Master Password, which is measured with an algorithm by F. Ruiz called WiseHash. This algorithm is also used in PassLok, RSA, SeeOnce, and other crypto programs by F. Ruiz.</p>
   <p>Unlike in other algorithms, "bad" passwords having a low entropy are allowed. This forces those trying to guess a user's Master Password to perform a lot of computations on the "bad" passwords before they can move on to those having a higher entropy, or risk missing the "easy" ones.</p>
@@ -185,12 +201,12 @@ Output
     <p><strong>Notice:</strong> Since this program is distributed as a piece of human-readable code, we consider it an expression of free speech protected by the laws of many countries. Putting into circulation tampered versions of the app, whether by individuals or public entities, violates free speech and copyright protection laws.</p>
     <p>SynthPass contains strong cryptographic methods, which may be illegal to use in some countries. Please check the local laws before using it.</p>
     <div id="canary"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8BAMAAADI0sRBAAAAGFBMVEUAAAAAAAD///91XhdgYGCcnJzMzMzUqipkv+fEAAAAAXRSTlMAQObYZgAAAYFJREFUOMt1lLGOgzAQREEUaVkHkhpEUkOVmvsDIt31IF1PdP8vnWwzHtaGKRDmsbO7eHGm9Cfyys4km/ojmEvQ/ZBS10N6Gl+I18/v6G/KtCrTOnVuscbWSwsxPYPBwEsGw1nxgEGpxoUzuI00MjuDqWdwvyD4e88nuOdbMFOge3j79V3liHAjL7np4kt4u5V2fwS8bGbbHd3hjZ0wyt1hZAzuxL3FZoffqrUSlaG4qqU2HFbMfoplj68pNqr0T4xF4SFUMyJcY+EqxVgTS4QlwkZjrAXSubFRsw4H5p5BxLlIgwfTIW6DoXafPcYkqN74zRf3uN7bf2HHChvnuMGX7WoRYD8tTN/4q2CS/YQ8tvY79GwsXjO3J6jq/Qz7Mds8ds5RSDypAmz4zSr1E/EfQ9MJHjDd5PSGu1Vt8Q3BOBrVDuNdnj0DB2RCvH0xPpnYHoLhXmluXdajU7E7ONOj+YyP5Fzx9MDHQHIkQGCv1WtcaFqSkKeUumjnVB80TP0D1fGXaRHBg/YAAAAASUVORK5CYII=">
-    <p>This paragraph and the canary logo above attest to the fact that, up until the release of SynthPass version 0.2.1 (February 2020) we have not received any requests under gag order for user data or modifications of the code. This paragraph will be periodically updated as this situation continues.</p>
+    <p>This paragraph and the canary logo above attest to the fact that, up until the release of SynthPass version 0.2.4 (October 2020) we have not received any requests under gag order for user data or modifications of the code. This paragraph will be periodically updated as this situation continues.</p>
     </div>
   </div>
   <hr>
   <address>
-  SynthPass 0.2.1 &#169; F. Ruiz 2020
+  SynthPass 0.2.4 &#169; F. Ruiz 2020
   </address>
   <ul>
     <li>smart Password engine based on WiseHash by F. Ruiz 2014</li>

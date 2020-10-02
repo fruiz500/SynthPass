@@ -4,7 +4,7 @@
 var websiteName, pwdNumber = 0, cryptoStr = '', masterPwd;
 
 //gets executed with the OK button
-function doStuff(e) {
+function doStuff(clipOn) {
 	if(memoArea.style.display == 'block'){					//save memo into field 4, along with everything else
 		if(websiteName){
 			if(!masterPwd){							//get master Password if not in memory
@@ -88,6 +88,8 @@ function doStuff(e) {
 			newPwd = pwdSynth(1,pwdStr1,serialStr1,isPin,isAlpha);
 		if(!newPwd) return;								//bail out if just erasing stored password
 		pwdOut.push(newPwd.slice(0,lengthStr));
+		
+		if(clipOn) copyStr(newPwd.slice(0,lengthStr));	//copy this one to clipboard if so directed
 	
 	//fill missing inputs and compute the rest of the passwords
 		if(pwdNumber > 1){
@@ -265,6 +267,7 @@ chrome.runtime.onMessage.addListener(
 				  }else if(pwdNumber >= 5){		//too many boxes
 					  pwdTable.style.display = 'none';
 		  			  okBtn.style.display = 'none';
+					  clipbdBtn.style.display = 'none';
 					  mainMsg.textContent = "Too many password fields. Try filling them manually"
 				  }
 			  }	  
@@ -340,6 +343,7 @@ function showMemo(name){
 	pwdTable.style.display = 'none';
 	memoArea.style.display = 'block';
 	okBtn.textContent = 'Save';
+	clipbdBtn.style.display = 'none';
 	synthTitle.textContent = "SynthPass notes";
 	memoBox.focus()
 }
@@ -416,10 +420,10 @@ function showPwd(number){
 		imgEl = document.getElementById('showPwdMode' + number);
 	if(pwdEl.type == "password"){
 		pwdEl.type = "text";
-		imgEl.src = "../img/hide-24.png"
+		imgEl.src = "/img/hide-24.png"
 	}else{
 		pwdEl.type = "password";
-		imgEl.src = "../img/eye-24.png"
+		imgEl.src = "/img/eye-24.png"
 	}
 }
 
@@ -705,4 +709,15 @@ function changeBase(number, inAlpha, outAlpha) {
         result = outAlpha[resultDigit] + result;
     }
     return result;
+}
+
+//for copying the result to clipboard. Uses invisible input element.
+function copyStr(string){
+	var box = document.createElement('textarea');
+	box.value = string;
+	document.body.appendChild(box);
+	box.focus();
+	box.select();
+	document.execCommand('copy');
+	document.body.removeChild(box)
 }
