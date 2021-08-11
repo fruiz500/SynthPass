@@ -6,7 +6,7 @@
 
 <link rel="shortcut icon" type="image/x-icon" href="../img//icon16.png">
 <link href="../css/style.css" rel="stylesheet">
-
+      
 <!--this only loads two regular expressions: blackListExp and wordListExp, plus their lengths-->
 <!--based on WiseHash, by yours truly. https://github.com/fruiz500/wisehash-->
 <script src="../js-src/dictionary_en.js"></script>
@@ -79,7 +79,7 @@
     <p>Other times the website won't accept the password until you have actually typed into that box. Just click on the filled password, type any character somewhere inside, then delete it immediately.</p>
     <p>And sometimes you encounter websites that just don't want to cooperate. This is why we have the little dialog below, which works exactly like the popup to synthesize a single password, and displays the result so you can edit it, copy it, and paste it manually. Since this help page is no longer connected to the website you want to log into, there is an extra box to enter the website name (just the last two words, as in &quot;synthpass.com&quot;, case insensitive), which the popup would have taken directly from the website. You also need to supply the serial, if any, and the length or special characters to include if different from the !#_ set. None of this data will be remembered. Because this dialog does not involve storage, it doesn't work with user-supplied passwords.</p>
     <p>For your protection, the input fields will be cleared after the password is synthesized, and the output field when it is copied to clipboard. Clicking the title of this help item clears the output as well.</p>
-    <p>There is a 3-minute video on YouTube explaining most of this with examples: <a href="https://www.youtube.com/watch?v=Y5jwImGkzCc" target="_blank">https://www.youtube.com/watch?v=Y5jwImGkzCc</a></p>
+    <p>There is a 3-minute video on YouTube explaining most of this with examples: <a href="https://www.youtube.com/watch?v=Y5jwImGkzCc" target="_blank">https://www.youtube.com/watch?v=Y5jwImGkzCc</a></p> 
 <p id="helpMsg" class="message" title="password strength appears here as you type, along with a mnemonic word">Fill the fields below and click OK</p>
 <table width="1000px" id="helpTable">
 <tr>
@@ -155,7 +155,7 @@ Output
   <div class="helptext">
     <p>SynthPass does not have general options, but sometimes a website allows only passwords of a certain length or composition. To take care of this, you can enter some additional data in the <strong>length</strong> box, which will be remembered next time you load that website. These can be entered in any order:</p>
     <ul>
-    <li>To limit the length to a certain value, enter the numeric value in the box (as in 20, or 15)
+    <li>To limit the length to a certain value, enter the numeric value in the box (as in 20, or 15)    
     <li>To output only numbers, enter &quot;num&quot; or &quot;pin&quot; without the quotes (or any word that contains those strings, such as &quot;number&quot;); default length is 4
     <li>To force alphanumeric output, without any special characters, enter &quot;al&quot; without the quotes (or any word that contains that string, such as &quot;alpha&quot;); default length is 44
     <li>To use certain special characters instead of the default !#_ set, enter them in the box; default length is 44, with the first character in the set appearing at the beginning
@@ -201,12 +201,12 @@ Output
     <p><strong>Notice:</strong> Since this program is distributed as a piece of human-readable code, we consider it an expression of free speech protected by the laws of many countries. Putting into circulation tampered versions of the app, whether by individuals or public entities, violates free speech and copyright protection laws.</p>
     <p>SynthPass contains strong cryptographic methods, which may be illegal to use in some countries. Please check the local laws before using it.</p>
     <div id="canary"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8BAMAAADI0sRBAAAAGFBMVEUAAAAAAAD///91XhdgYGCcnJzMzMzUqipkv+fEAAAAAXRSTlMAQObYZgAAAYFJREFUOMt1lLGOgzAQREEUaVkHkhpEUkOVmvsDIt31IF1PdP8vnWwzHtaGKRDmsbO7eHGm9Cfyys4km/ojmEvQ/ZBS10N6Gl+I18/v6G/KtCrTOnVuscbWSwsxPYPBwEsGw1nxgEGpxoUzuI00MjuDqWdwvyD4e88nuOdbMFOge3j79V3liHAjL7np4kt4u5V2fwS8bGbbHd3hjZ0wyt1hZAzuxL3FZoffqrUSlaG4qqU2HFbMfoplj68pNqr0T4xF4SFUMyJcY+EqxVgTS4QlwkZjrAXSubFRsw4H5p5BxLlIgwfTIW6DoXafPcYkqN74zRf3uN7bf2HHChvnuMGX7WoRYD8tTN/4q2CS/YQ8tvY79GwsXjO3J6jq/Qz7Mds8ds5RSDypAmz4zSr1E/EfQ9MJHjDd5PSGu1Vt8Q3BOBrVDuNdnj0DB2RCvH0xPpnYHoLhXmluXdajU7E7ONOj+YyP5Fzx9MDHQHIkQGCv1WtcaFqSkKeUumjnVB80TP0D1fGXaRHBg/YAAAAASUVORK5CYII=">
-    <p>This paragraph and the canary logo above attest to the fact that, up until the release of SynthPass version 0.2.4 (October 2020) we have not received any requests under gag order for user data or modifications of the code. This paragraph will be periodically updated as this situation continues.</p>
+    <p>This paragraph and the canary logo above attest to the fact that, up until the release of SynthPass version 0.2.5 (August 2021) we have not received any requests under gag order for user data or modifications of the code. This paragraph will be periodically updated as this situation continues.</p>
     </div>
   </div>
   <hr>
   <address>
-  SynthPass 0.2.4 &#169; F. Ruiz 2020
+  SynthPass 0.2.5 &#169; F. Ruiz 2021
   </address>
   <ul>
     <li>smart Password engine based on WiseHash by F. Ruiz 2014</li>
@@ -217,7 +217,7 @@ Output
   <address>
   This document may be used, modified or redistributed under GNU GPL license, version 3.0 or higher.
   </address>
-</div>
+</div> 
 <!--functions for opening and closing help items, plus password synthesis in last item-->
   <script src="../js-src/help.js"></script>
   <script src="../js-src/main.js"></script>
