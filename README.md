@@ -31,7 +31,7 @@ The extension is available for Chrome and its derivatives and for Firefox. Here 
 
 Chrome: https://chrome.google.com/webstore/detail/synthpass/khkpfnickpejcjhajmkljfadcaegphkd
 
-Firefox: https://addons.mozilla.org/en-US/firefox/addon/synthpass/
+Firefox: https://addons.mozilla.org/firefox/addon/synthpass/
 
 When a password field is visible on a webpage, do this:
 
