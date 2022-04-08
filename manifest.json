@@ -1,7 +1,7 @@
 {
   "name": "SynthPass",
   "short_name": "SynthPass",
-  "description": "High-security password synthesizer",
+  "description": "High-security password synthesizer", 
   "omnibox": { "keyword" : "src" },
   "version": "0.2.5",
   "manifest_version": 2,
