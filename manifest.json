@@ -3,8 +3,8 @@
   "short_name": "SynthPass",
   "description": "High-security password synthesizer", 
   "omnibox": { "keyword" : "src" },
-  "version": "0.2.5",
-  "manifest_version": 2,
+  "version": "0.2.6",
+  "manifest_version": 3,
   "icons": {
     "16": "img/icon16.png",
     "48": "img/icon48.png",
@@ -12,15 +12,16 @@
   },
   "permissions": [
     "storage", "activeTab",
-    "webRequest", "webRequestBlocking",
+    "scripting", "alarms",
     "contextMenus", "history"
   ],
-  "content_security_policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; frame-src 'self' https://* http://*",
-  "background": {
-    "scripts": ["js-src/background.js"],
-    "persistent": true
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; img-src 'self' data:; style-src 'self'; frame-src 'self' https://* http://*"
   },
-  "browser_action": {
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
     "default_icon": {
       "16": "img/icon16.png",
       "48": "img/icon48.png",

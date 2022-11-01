@@ -18,7 +18,10 @@ function doStuff(clipOn) {
 			if(!memoBox.value.trim()){					//nothing to encrypt, so save an empty string
 				var crypto = ''
 			}else{											//now really encrypt
-				chrome.runtime.sendMessage({message: "preserve_master", masterPwd: masterPwd});
+				chrome.storage.session.set({"masterPwd": masterPwd});
+				chrome.alarms.create("SPAlarm",
+					{"delayInMinutes": 5}
+				);
 				var	nonce = nacl.randomBytes(9),
 					nonce24 = makeNonce24(nonce),
 					plain =	 nacl.util.decodeUTF8(memoBox.value.trim()),
@@ -249,7 +252,14 @@ chrome.runtime.onMessage.addListener(
 				masterPwd1.value = masterPwd;
 				showPwdMode1.style.display = 'none'
 			}else{
-				chrome.runtime.sendMessage({message: 'retrieve_master'})
+				let gettingPwd = chrome.storage.session.get("masterPwd");
+				gettingPwd.then(function(result){
+					if(result["masterPwd"]){
+						masterPwd = result["masterPwd"];
+						masterPwd1.value = masterPwd;
+						showPwdMode1.style.display = 'none'
+					}
+				})
 			}
 		  if(pwdNumber == 1){						//only one password box: display single input
 		  	  if(masterPwd){
@@ -291,19 +301,9 @@ chrome.runtime.onMessage.addListener(
 	  //close everything and erase cached Master Password after five minutes
 	  setTimeout(function(){
 		  masterPwd = '';
-		  chrome.runtime.sendMessage({message: "reset_now"});
+		  chrome.storage.session.remove("masterPwd");
 		  window.close()
 	  }, 300000)
-	  
-	}else if(request.message == "master_fromBg"){		//get master from background page
-		if(request.masterPwd){
-			masterPwd = request.masterPwd;
-			masterPwd1.value = masterPwd;
-			showPwdMode1.style.display = 'none'
-		}
-		
-	}else if(request.message == "delete_master"){
-		masterPwd = ''
 
 	}else if( request.message == "done" ) {				//done, so store the serial, if any, of the password that has focus, plus the user name
     	var	serialStr = document.getElementById("serial" + lastFocus).value.trim(),
@@ -326,8 +326,10 @@ chrome.runtime.onMessage.addListener(
 		var	pwdStr = document.getElementById("masterPwd" + lastFocus).value;
 		if(pwdStr){
 			masterPwd = pwdStr;
-			chrome.runtime.sendMessage({message: "reset_timer"});			//reset auto timer on background page
-			chrome.runtime.sendMessage({message: "preserve_master", masterPwd: masterPwd})
+			chrome.storage.session.set({"masterPwd": masterPwd});			//store master password temporarily, to be erased in 5 minutes of inactivity
+			chrome.alarms.create("SPAlarm",
+				{"delayInMinutes": 5}
+			)
 		}
 
 		window.close()
@@ -400,7 +402,10 @@ function fetchWebsiteMemo(){
 					pwd2 = wiseHash(masterPwd,websiteName),
 					plain = nacl.secretbox.open(cipher2,nonce24,pwd2);
 				if(plain){
-					chrome.runtime.sendMessage({message: "preserve_master", masterPwd: masterPwd});
+					chrome.storage.session.set({"masterPwd": masterPwd});
+					chrome.alarms.create("SPAlarm",
+						{"delayInMinutes": 5}
+					);
 					memoBox.value = nacl.util.encodeUTF8(plain)
 				}else{
 					masterPwdMsg.textContent = "Decryption of secure note has failed";

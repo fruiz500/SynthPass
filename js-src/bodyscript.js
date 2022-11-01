@@ -11,20 +11,20 @@ window.onload = function() {
 	cancelBtn.addEventListener('click', function(){window.close()});		//quit
 
     helpBtn.addEventListener('click', function(){chrome.tabs.create({url: '/html/help.html'});});		//open tab with help items
-
+	
 	failMsg.addEventListener('click', fetchUserId);				//fetch userID anyway and display
 
 	showPwdMode1.addEventListener('click', function(){showPwd('1')});				//toggle visibility of the passwords
 	showPwdMode2.addEventListener('click', function(){showPwd('2')});
 	showPwdMode3.addEventListener('click', function(){showPwd('3')});
 	showPwdMode4.addEventListener('click', function(){showPwd('4')});
-
+	
 	for(var i = 1; i < 4; i++){
 		document.getElementById('masterPwd' + i.toString()).addEventListener('keyup', pwdKeyup);
 		document.getElementById('masterPwd' + i.toString()).addEventListener('focus', function(){var master = masterPwd1.value; if(master) keyStrength(master,true)});
 		document.getElementById('serial' + i.toString()).addEventListener('focus', function(){lastFocus = i.toString()})
 	}
-
+	
 	cancelExtraMasterBtn.addEventListener('click',cancelextraMaster);
 	acceptExtraMasterBtn.addEventListener('click',acceptextraMaster);
 	extraMasterIcon.addEventListener('click',function(){showPwd('extraMaster')});
@@ -40,15 +40,24 @@ window.onload = function() {
 		chrome.history.deleteUrl({url: activeTab.url})
 	});
 
-	if(!masterPwd) chrome.runtime.sendMessage({message: 'retrieve_master'});
+	if(!masterPwd){															//get master pwd from session storage
+		let gettingPwd = chrome.storage.session.get("masterPwd");		//this is a Promise
+		gettingPwd.then(function(result){
+			if(result["masterPwd"]){
+				masterPwd = result["masterPwd"];
+				masterPwd1.value = masterPwd;
+				showPwdMode1.style.display = 'none'
+			}
+		})
+	} 
 
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {	//find the id of the current tab and tell script to count password boxes
     	activeTab = tabs[0];
 
 //load content script programmatically (needs activeTab permission)
-		chrome.tabs.executeScript({
-			file: "/js-src/content.js",
-			allFrames: true
+		chrome.scripting.executeScript({
+			target: {tabId: activeTab.id, allFrames: true},
+			files: ["/js-src/content.js"]
 		});
 
 //the rest in case there's no meaningful reply from the content script
@@ -69,6 +78,6 @@ window.onload = function() {
 			}
 		}
 		var name = websiteName;
-		startTimer = setTimeout(function(){showMemo(name)},100)
+		startTimer = setTimeout(function(){showMemo(name)},1000)
 	})
 }
