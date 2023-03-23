@@ -53,6 +53,7 @@ div:focus {
 	text-decoration: none;
 	width: 100%;
 	-webkit-appearance: none;
+	appearance: none;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -66,6 +67,9 @@ div:focus {
 	padding: 0px;
 	padding-left: 6px;
 	height: 25px;
+}
+.centered {
+	text-align: center;
 }
 .message {
 	white-space: pre-line;
@@ -216,9 +220,6 @@ opacity: 0;
 }
 #helpMsg{
 	height: 40px;
-}
-#memoArea {
-//	display: none;
 }
 #moreAppsBtn {
 	font-size: small;

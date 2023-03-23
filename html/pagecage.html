@@ -52,12 +52,12 @@
   <p>The page displayed is running in an isolated frame so no cookies are loaded, no history is recorded, and it is invisible to other extensions.</p>
   <p>You type a new URL in the box, or select a PassLok web app or secure search engine from the drop-down list.</p>
   <p>To load another page, refresh or click Clear. Links on page may load on a separate tab, but you can maintain security by right-clicking on them and selecting "Open Link in Cage."</p>
-  <p>This all works by loading the page into an iframe element in order to prevent other extensions from seeing anything typed into or produced by the page. Warning: this entails ignoring X-frame headers, which exposes the loaded page to clickjacking attacks.</p>
+  <p>This all works by loading the page into an iframe element in order to prevent other extensions from seeing anything typed into or produced by the page.</p>
   <p>Sometimes a website may refuse to load. In this case, you may want to install the "Ignore X-Frame headers" extension, from which this page has borrowed some code. This is the <a href="https://chrome.google.com/webstore/detail/ignore-x-frame-headers/gleekbfjekiniecknbkamfmkohkpodhe" target="_blank">link for Chrome</a>, and <a href="https://addons.mozilla.org/en-US/firefox/addon/ignore-x-frame-options-header/" target="_blank">for Firefox</a>.</p>
   </div>
 </div>
 
-  <iframe seamless id="pageFrame" src="" border="none" margin=0 frameborder=0 allowfullscreen allow="microphone; camera"></iframe>
+  <iframe seamless id="pageFrame" src="" allowfullscreen allow="microphone; camera"></iframe>
 
 <script src="../js-src/cagescript.js"></script>
 </body>

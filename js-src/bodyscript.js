@@ -51,14 +51,19 @@ window.onload = function() {
 		})
 	} 
 
+	//load content script programmatically (needs activeTab permission)
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {	//find the id of the current tab and tell script to count password boxes
     	activeTab = tabs[0];
-
-//load content script programmatically (needs activeTab permission)
-		chrome.scripting.executeScript({
-			target: {tabId: activeTab.id, allFrames: true},
-			files: ["/js-src/content.js"]
-		});
+		chrome.tabs.sendMessage(activeTab.id, {message: "send_data"}, function(response) {
+			var lastError = chrome.runtime.lastError;
+			if (lastError && lastError.message.includes("does not exist")) {								//no receiving end, so inject the script instead
+				chrome.scripting.executeScript({
+					target: {tabId: activeTab.id, allFrames: true},
+					files: ["/js-src/content.js"]
+				});
+				return;
+			}
+		})
 
 //the rest in case there's no meaningful reply from the content script
 		if(activeTab.url){

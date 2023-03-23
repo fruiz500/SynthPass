@@ -3,7 +3,7 @@
   "short_name": "SynthPass",
   "description": "High-security password synthesizer", 
   "omnibox": { "keyword" : "src" },
-  "version": "0.2.6",
+  "version": "0.2.9",
   "manifest_version": 3,
   "icons": {
     "16": "img/icon16.png",
@@ -19,7 +19,7 @@
     "extension_pages": "default-src 'self'; img-src 'self' data:; style-src 'self'; frame-src 'self' https://* http://*"
   },
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
   "action": {
     "default_icon": {
