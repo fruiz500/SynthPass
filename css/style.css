@@ -2,12 +2,12 @@ html {
 	-webkit-text-size-adjust: 100%;
 }
 body {
-	font-family: Sans-Serif;
-	margin-left: 1%;
-	margin-right: 1%;
-	overflow: auto;
-	background-color: #f7f7f7;
-	color: #000000;
+    font-family: Sans-Serif;
+    margin: 0;
+    padding: 10px; /* Consistent padding for both views */
+    background-color: #f7f7f7;
+    color: #000000;
+    overflow-x: hidden; /* Keeps the horizontal scrollbar away in the popup */
 }
 input:focus {
     outline: none !important;
@@ -76,9 +76,14 @@ div:focus {
 	height: 30px;
 }
 .field-icon {
-  margin-left: -20px;
-  height: 12px;
-  z-index: 2;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; /* Slightly smaller for a cleaner look */
+    height: 20px;
+    cursor: pointer;
+    z-index: 10;
 }
 .helpitem {
 	font-size: medium;
@@ -183,7 +188,6 @@ opacity: 0;
 }
 #helpBtn {
 	float: right;
-    margin-right: 10px;
 }
 
 #helpScr {
@@ -237,4 +241,159 @@ opacity: 0;
 #extraMasterScr {
 	display: none;
 	width: 300px;
+}
+
+/* Layout Utilities to satisfy CSP 'style-src self' */
+.w300 { width: 300px; }
+.w100p { width: 100%; }
+.relative { position: relative; }
+.flex { display: flex; }
+.flex-1 { flex: 1; }
+.gap10 { gap: 10px; }
+.mb8 { margin-bottom: 8px; }
+.mt4 { margin-top: 4px; }
+.mt10 { margin-top: 10px; }
+
+/* SynthPass 2 Card Styling */
+.card {
+    background: #ffffff;
+    border: 1px solid #dedede;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+/* Strength and Hashili Feedback */
+.strength-container {
+    height: 4px;
+    background: #ddd;
+    margin-top: 8px;
+    border-radius: 2px;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    background: #ef4444; /* Default to Terrible/Weak */
+    transition: all 0.3s ease;
+}
+
+.hashili-text {
+    font-size: 10px;
+    color: #666;
+    min-height: 14px;
+}
+
+.classic-toggle {
+    font-size: 11px;
+    color: #555;
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+.icon-hidden {
+    visibility: hidden;
+}
+
+/* Container for the MK input and eye icon */
+.input-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Add right padding so text doesn't go under the icon */
+#m-pass {
+    padding-right: 35px !important;
+    box-sizing: border-box; /* Ensures padding doesn't break the 100% width */
+}
+
+/* Header Layout logic */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-right: 2px; /* Slight buffer to keep buttons off the very edge */
+}
+
+#synthTitle {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.header-btns {
+  display: flex;
+  gap: 5px;
+}
+
+/* Optional: Slightly smaller buttons for the header area */
+.header-btn {
+  font-size: 9pt !important;
+  padding: 3px 8px !important;
+}
+
+/* The fixed width for the extension popup */
+#mainScr {
+    display: block;
+    width: 300px; 
+    box-sizing: border-box;
+}
+
+/* The flexible, readable width for the Help page */
+#helpScr {
+    max-width: 800px; /* Prevents text from stretching too far on wide monitors */
+    margin: 0 auto;   /* Centers the help content */
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Ensure buttons in the help page don't inherit the 100% width from the popup classes */
+#helpTable .cssbutton {
+    width: auto;
+    padding: 6px 20px;
+}
+
+/* Subtle highlight for the Vault button when data exists */
+.cssbutton.vault-active {
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+/* Maintain consistency on hover */
+.cssbutton.vault-active:hover {
+    background-color: rgba(76, 175, 80, 0.05); /* Very faint green tint */
+}
+
+/* Styles for the Audit/Verification section */
+.audit-list {
+    font-size: 0.85rem;
+}
+
+.command-box {
+    background: rgba(0,0,0,0.1);
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    border-left: 3px solid var(--accent); /* Assuming --accent is defined */
+}
+
+.troubleshoot-box {
+    font-size: 0.8rem;
+    margin-top: 15px;
+    border: 1px dashed #666;
+    padding: 10px;
+}
+
+.audit-note {
+    margin-top: 10px;
+    font-size: 0.85rem;
+}
+
+.accent-text {
+    color: var(--accent);
+    font-weight: bold;
 }
