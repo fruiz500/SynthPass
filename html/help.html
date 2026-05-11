@@ -1,225 +1,137 @@
 <!doctype html>
 <html lang="en">
-      <head>
-      <meta charset="utf-8">
-      <title>SynthPass Help</title>
-
-<link rel="shortcut icon" type="image/x-icon" href="../img//icon16.png">
-<link href="../css/style.css" rel="stylesheet">
-      
-<!--this only loads two regular expressions: blackListExp and wordListExp, plus their lengths-->
-<!--based on WiseHash, by yours truly. https://github.com/fruiz500/wisehash-->
-<script src="../js-src/dictionary_en.js"></script>
-
-<!--Tweet NaCl crypto library by Dmitry Chestnykh. https://github.com/dchest/tweetnacl-js-->
-<script src="../js-lib/nacl-fast.js"></script>
-
-<!--scrypt-async-js KDF by Dmitry Chestnykh. https://github.com/dchest/scrypt-async-js-->
-<script src="../js-lib/scrypt-async.js"></script>
-
-<!--this used to be in TweetNaCl, but they dropped it-->
-<script src="../js-lib/nacl-util.js"></script>
-
-      </head>
-      <body>
+<head>
+    <meta charset="utf-8">
+    <title>SynthPass Help</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../img/icon16.png">
+    <link href="../css/style.css" rel="stylesheet">
+    
+    <script src="../js-src/dictionary_en.js"></script>
+    <script src="../js-lib/nacl-fast.js"></script>
+    <script src="../js-lib/scrypt-async.js"></script>
+</head>
+<body>
 <div id="helpScr">
-  <h2 class="centered" id="helpHeading">Welcome to SynthPass</h2>
-  &nbsp;&nbsp;&nbsp;<span id='helpmsg'>For help on how to do things, click on each title.</span><br>
-  <br>
-  <hr>
-    <h3 class="helpitem">What is SynthPass?</h3>
-  <div class="helptext">
-    <p>SynthPass is a password manager of a different kind: rather than storing your passwords, <em>it synthesizes them on the fly</em> based on a Master Password that stays always the same. This way, there is no need to store anything secret that might be compromised, and you don't have to keep paying someone to store passwords for you. SynthPass-made passwords are high-strength, and different for each website.</p>
-    <p>You can keep reusing your Master Password even if a particular website forces you to change its password. Simply add a serial (numbers, letters, it doesn't matter what), and you're set. SynthPass will remember the serial for you, as well as your user ID if you enter it. The only thing you need to remember is your Master Password, which you will never have to change if you don't want to.</p>
-    <p>But if you really insist, SynthPass will remember a password you make. It gets encrypted and syncs with the browser, so you don't have to worry about third parties having access to it.</p>
-    <p>And if SynthPass  cannot fill a password, clicking the icon opens a box where you can write and save some secure notes about the website. There are also buttons to load other PassLok apps, do secure searches, and load web pages so they cannot be seen by other extensions.</p>
-  </div>
-  <hr>
-    <h3 class="helpitem">Do this first</h3>
-  <div class="helptext">
-    <p>The first thing to do is change your password for a given website to a SynthPass-made password. There is more complete help on this down below, but this is the summary of what you need to do:</p>
-    <ol>
-      <li>Navigate to the page where you change the password for that particular website. Typically, it will contain a box to write the current password, and one or two more to type in the new password. Notice if there is a restriction on length or special characters.</li>
-      <li>Click the SynthPass logo, which will open a dialog containing as many rows as password boxes on the page. Type your Master Password in the first box labeled as such. If there is a length restriction, type the number into the <strong>length</strong> box. If you want certain special characters to be used, type them into the <em>length</em> box too. Then click <strong>OK</strong>.</li>
-      <li>All the password boxes on the page are now filled with your new password. Go to the box for the old password, delete what is there, and type your old password. Then save the changes by clicking the appropriate button.</li>
-    </ol>
-    <p>After this, the website will accept your SynthPass-made password in place of the old one. If you have a password manager that offers to remember your new password, there is no harm doing that, but you won't need it anymore.</p>
-    <p>Sometimes the button to accept the new passwords won't work. Just click inside the password boxes, type in a character (doesn't matther what) and delete it immediately. This should re-enable the button.</p>
-  </div>
-  <hr>
-    <h3 class="helpitem">How do I fill a Password?</h3>
-  <div class="helptext">
-    <p>When a password field is visible on a webpage, do this:</p>
-    <ol>
-      <li>Click the SynthPass logo.</li>
-      <li>A popup box will appear, containing writable boxes for your Master Password and an optional serial, plus the user ID if there is a single extra box on the webpage, and the password length (default is 44). The serial box will be filled already if you used a serial on this website before, as well as the user ID and the length etc.. If you have used your Master Password within the last five minutes, this box will be filled also. To make a PIN consisting only of digits, type 'pin' in the <em>length</em> box (default is 4 digits), or 'pin6' (6 digits) and so forth.</li>
-      <li>Type in your Master Password if needed. As you type, its strength and entropy are displayed near the top of the dialog. If you stop typing for a second, a mnemonic "Hashili" word is displayed in the message area to reassure you that your typed it correctly. Clicking the eye icon reveals the complete password. When you are satisfied, click <strong>OK</strong> or press the <strong>Enter</strong> key. If you want the password to be copied to clipboard as well, click the <b>&#9658; Clip</b> button instead.</li>
-      <li>When the popup disappears, the password and user ID fields on the webpage will be filled, but login has not yet taken place. Proceed from this point on as if you had typed in user ID and password directly into the webpage. Sometimes a website requires that you physically type something in the password box; in this case it is enough to click in the middle of the password (which you won't see), type a character, and then immediately press the Delete or Backspace key to remove it.</li>
-    </ol>
-    <p>If the popup says that it cannot see the password field or displays more than one box for the Master Password, you may need to paste in the synthesized password manually. The process for this is explained two Help items below this one.</p>
-    <p>There is a 3-minute video on YouTube explaining all of this with examples: <a href="https://www.youtube.com/watch?v=RLGScvETOEc" target="_blank">https://www.youtube.com/watch?v=RLGScvETOEc</a></p>
-  </div>
-  <hr>
-    <h3 class="helpitem">How do I change a Password?</h3>
-  <div class="helptext">
-    <p>When you reach a password change webpage, clicking the SynthPass logo will open a popup containing several rows, one for each password field on the page, arranged in the same order, plus a box for password length. This is what you do next:</p>
-    <ol>
-      <li>Type in your Master Password in the first box  corresponding to the old password, if it was made by SynthPass. Type the old serial, which should appear on the first row, into the boxes next to them. Add the user ID and other options if the boxes are not populated already. Default length is 44, and the password is composed of capitals and smallcase letters, numbers, and the characters !#_  If you omit typing in a password or serial box, SynthPass will use the value in the box above it.</li>
-      <li>To use what you type in the password box as-is, without any synthesis, and without storing it (like when you are going to use a SynthPass-made password for the first time), type a minus sign ( - ) in the serial box to its right. To use something else, which will be stored, write your Master Password in its box, and a plus sign (+) in the serial box. A popup will ask you for the new password, which will be remembered.</li>
-      <li>Do the same for the box or boxes corresponding to the new password. Typically this will involve simply a new serial, and in this case it is enought to type it in the corresponding box or boxes. Again, if a box is left empty, the value above it will be used. To revert to not using a serial, type a space in that serial field. You can change your Master Password at this point, by typing in a new one.</li>
-      <li>To make SynthPass remember the new serial, click on it or the password box to its left to make sure it is highlighted before clicking OK. Then click <strong>OK</strong>.</li>
-      <li>When the popup disappears, all the password fields, new and old, will be filled. Proceed from this point onward as if you had filled them manually.</li>
-    </ol>
-    <p>There is a 3-minute video on YouTube explaining all of this with examples: <a href="https://www.youtube.com/watch?v=96pSh4h1CAU" target="_blank">https://www.youtube.com/watch?v=96pSh4h1CAU</a></p>
-  </div>
-  <hr>
-    <h3 class="helpitem">Something is not working, but I still want to synthesize a Password</h3>
-  <div class="helptext">
-  	<p>Sometimes websites don't accept the special characters used by SynthPass, which are these three <strong>!#_</strong> Sometimes they change their own web address without warning, which will change the password that SynthPass makes for it.</p>
-    <p>Other times the website won't accept the password until you have actually typed into that box. Just click on the filled password, type any character somewhere inside, then delete it immediately.</p>
-    <p>And sometimes you encounter websites that just don't want to cooperate. This is why we have the little dialog below, which works exactly like the popup to synthesize a single password, and displays the result so you can edit it, copy it, and paste it manually. Since this help page is no longer connected to the website you want to log into, there is an extra box to enter the website name (just the last two words, as in &quot;synthpass.com&quot;, case insensitive), which the popup would have taken directly from the website. You also need to supply the serial, if any, and the length or special characters to include if different from the !#_ set. None of this data will be remembered. Because this dialog does not involve storage, it doesn't work with user-supplied passwords.</p>
-    <p>For your protection, the input fields will be cleared after the password is synthesized, and the output field when it is copied to clipboard. Clicking the title of this help item clears the output as well.</p>
-    <p>There is a 3-minute video on YouTube explaining most of this with examples: <a href="https://www.youtube.com/watch?v=Y5jwImGkzCc" target="_blank">https://www.youtube.com/watch?v=Y5jwImGkzCc</a></p> 
-<p id="helpMsg" class="message" title="password strength appears here as you type, along with a mnemonic word">Fill the fields below and click OK</p>
-<table width="1000px" id="helpTable">
-<tr>
-<th>
-Website name
-</th>
-<th>
-Length etc.
-</th>
-<th>
-Master Password
-</th>
-<th>
-Serial
-</th>
-<th>
-Output
-</th>
-</tr>
-<tr>
-<td width="15%">
-<input type="text" class="cssbox" id="siteName" title="domain name in *.* format" placeholder="name.suffix"/>
-</td>
-<td width="10%">
-<input type="text" class="cssbox" id="pwdLength" title="password length (default 44); begin with 'pin' for numeric output; special characters allowed"/>
-</td>
-<td width="30%">
-<input type="password" class="cssbox" id="masterPwdHelp" title="type Master Password here" placeholder="Password here"/><img id='showPwdModeHelp' class="field-icon" src="../img/eye-24.png" title="click this to see/hide Hashili and Password">
-</td>
-<td width="5%">
-<input type="text" class="cssbox" id="serial" title="add optional serial"/>
-</td>
-<td width="50%">
-<div class="cssbox" id="outputBox" contenteditable="true" title="edit as needed"></div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>
-&nbsp;<button class="cssbutton" id="okBtn" value="OK" title="OK">OK</button>
-</td>
-<td></td>
-<td>
-&nbsp;<button class="cssbutton" id="copyBtn" value="copy" title="copy to clipboard and erase from here">Copy</button>
-</td>
-</tr>
-</table>
-  </div>
-  <hr>
-    <h3 class="helpitem">SynthPass says my Master Password is Terrible</h3>
-  <div class="helptext">
-    <p>This is probably because it has a very low entropy, which means it is very easy to guess. Hackers are going to crack your Master Password by trying combinations of words, possibly with obvious character substitutions such as 0 instead of o. SynthPass contains a sophisticated password-scoring algorithm that awards points for each word and each letter or character. If a word is on its blacklist of 10,000 most used passwords, it gets no points.</p>
-    <p>SynthPass compensates for low entropy by adding extra computations, so that even known bad passwords are still allowed. Execution will be slow, however, unless your Master Password gets at least a Medium score.</p>
-    <p>So do yourself a favor and experiment a bit until you come up with a Master Password that scores high and is still easy to remember. Once you find it, you won't have to change it again.</p>
-  </div>
-  <hr>
-    <h3 class="helpitem">What's that nonsense word that appears when I stop typing?</h3>
-  <div class="helptext">
-    <p>This is a digital fingerprint of your Master Password, displayed as an 4-letter word. We call it &quot;Hashili&quot; because it comes from a &quot;hash&quot; and often sounds rather African. The point of Hashili is to reassure you that you have typed your Master Password correctly without having to make it visible. Likely you won't quite remember the Hashili for your Password, but you'll know it's correct when you see it because just one little mistake changes the word completely. Think of it as SynthPass saying &quot;correct!&quot; in its own exotic language.</p>
-    <p>If you still aren't quite sure that what you typed is correct, clicking the eye icon reveals the full contents of the Master Password box.</p>
-    <p>There are ten thousand different Hashili words but many, many more possibilities for your Master Password. This means that nobody can retrieve your Password even if they get its Hashili.</p>
-  </div>
-  <hr>
-    <h3 class="helpitem">I can't remember my Master Password</h3>
-  <div class="helptext">
-    <p>Then you won't be able to generate passwords for any websites. Sorry. Neither the Master Password nor the synthesized website passwords are stored anywhere. User-supplied website passwords are stored, but they cannot be decrypted without the Master Password.</p>
-    <p>This is where Hashili comes in handy. It is likely that you mistyped your Master Password or it's missing something. Try varying what you type as you look at its Hashili fingerprint (by clicking the eye icon once). Hashili is hard to remember, but easy to recognize once you get the right one.</p>
-    <p>If all else fails, most websites have a link to reset your password after verifying your email address. Next time make sure you use a Master Password that you can actually remember. High entropy is nice, but the app will take a low entropy password just as well.</p>
-  </div>
-  <hr>
-    <h3 class="helpitem">Where are the options?</h3>
-  <div class="helptext">
-    <p>SynthPass does not have general options, but sometimes a website allows only passwords of a certain length or composition. To take care of this, you can enter some additional data in the <strong>length</strong> box, which will be remembered next time you load that website. These can be entered in any order:</p>
-    <ul>
-    <li>To limit the length to a certain value, enter the numeric value in the box (as in 20, or 15)    
-    <li>To output only numbers, enter &quot;num&quot; or &quot;pin&quot; without the quotes (or any word that contains those strings, such as &quot;number&quot;); default length is 4
-    <li>To force alphanumeric output, without any special characters, enter &quot;al&quot; without the quotes (or any word that contains that string, such as &quot;alpha&quot;); default length is 44
-    <li>To use certain special characters instead of the default !#_ set, enter them in the box; default length is 44, with the first character in the set appearing at the beginning
-    </ul>
-    <p>For example, entering &quot;30 numbers&quot; (again, no quotes) in the Length box, causes the generated password to contain 30 numerical digits, and no letters or special characters. If you enter &quot;@$%*&amp;&quot; (no quotes) the generated password will be the default 44 characters long and will be composed of letters (smallcase and capitals), numbers, and those special characters (and no others). If you write &quot;alphabetic 25&quot; (no quotes), the generated password will contain a total of 25 letters (small and capitals) and numbers, with no special characters.</p>
-  </div>
-  <hr>
-    <h3 class="helpitem">Can I use SynthPass as a regular password manager?</h3>
-  <div class="helptext">
-    <p>Even though the strength of SynthPass is in generating high-strength passwords<a href="https://www.youtube.com/watch?v=Y5jwImGkzCc" target="_blank"></a> for you, it will accept and remember a password you supply, like typical password managers. Unlike those, however, SynthPass does not store passwords in &quot;the cloud&quot; (actually, someone's for-profit server farm in a location you don't know). Rather, SynthPass encrypts user-supplied passwords with the Master Password, and stores them within the browser data, which gets synced automatically when you log into Chrome or Firefox on a new machine.</p>
-    <p>Storing your own password is as easy as entering a + sign in the serial box, plus the Master Password in its own box. When you click OK, a popup asks you for the password you want to store. Since SynthPass remembers the content of the serial box, it will remember that you have a user-supplied password for that website, which it will decrypt and paste into the page exactly as if it had been a synthetic password.</p>
-    <p>To stop using a stored password for a given login, enter a - sign in the serial box, which will decrypt it one last time and then delete the encrypted password from browser storage.</p>
-  </div>
-  <hr>
-    <h3 class="helpitem">What if there is no password to fill?</h3>
-  <div class="helptext">
-    <p>In that case, SynthPass will offer to store, or will reveal if already stored, a note for that page. Notes are stored encrypted, so SynthPass will ask you for your Master Password if you have not used it within the last five minutes. Stored encrypted notes are kept with the browser data and sync across machines without using &quot;the cloud.&quot; This may be a good place to write instructions or other data needed to complete a login.</p>
-    <p>There's also a button that will re-load the page inside the extension, so that other extensions won't have access to it, and the browser won't record any action you do on it. Think of it as a per-page incognito or private mode. This feature is also available for any link, via the right-click menu. If you want page isolation but don't care about filling passwords, you may want to check out Page Cage, also available in this extension store.</p>
-  </div>
-  <hr>
-    <h3 class="helpitem">Can I use SynthPass on my smartphone?</h3>
-  <div class="helptext">
-    <p>At the moment SynthPass is a browser extension for Chrome and Firefox, and the only mobile browser that supports extensions is Firefox on Android. But you are not stuck being unable to log into that critical website just because of this. We have made a webpage that will synthesize the same password if you just provide the website name, any special options, the serial if any, and of course your Master Password. You can save it to Home Page and run it offline if you like. Here's the address:</p>
-    <p><a href="https://synthpass.com/app" target="_blank">https://synthpass.com/app</a></p>
-    <p>This is also explained, among other things, in this YouTube video: <a href="https://www.youtube.com/watch?v=Y5jwImGkzCc" target="_blank">https://www.youtube.com/watch?v=Y5jwImGkzCc</a></p>
-  </div>
-  <hr>
-  <h3 class="helpitem">I want to learn more about SynthPass</h3>
-  <div class="helptext">
-  <p>Here are more technical details. SynthPass generates 256-bit passwords that are converted to base64, so we end up with 44 alphanumeric characters. Some of those are later converted to other characters that are typically accepted in passwords, in order to satisfy common password requirements. The 256-bit passwords are the result of running a variable number of SCRYPT iterations on the Master Password, with the website name and serial appended to it. The SCRYPT implementation used is the one by D. Chestnykh, which is in turn based on the NaCl crypto library. The number of SCRYPT iterations is a function of the entropy of the Master Password, which is measured with an algorithm by F. Ruiz called WiseHash. This algorithm is also used in PassLok, RSA, SeeOnce, and other crypto programs by F. Ruiz.</p>
-  <p>Unlike in other algorithms, "bad" passwords having a low entropy are allowed. This forces those trying to guess a user's Master Password to perform a lot of computations on the "bad" passwords before they can move on to those having a higher entropy, or risk missing the "easy" ones.</p>
-  <p>We have a nifty info page at <a href="https://synthpass.com" target="_blank">https://synthpass.com</a> with links to all versions of SynthPass, information material, and tutorials.</p>
-   <p>SynthPass is open source, so you can always get the latest development version from its Github repository: <a href="https://github.com/fruiz500/synthpass" target="_blank">https://github.com/fruiz500/synthpass</a>. You can also contribute to its development if you feel so inclined. If you wish to report a bug or request a feature, this is the right place to do it. Just start a new Issue.</p>
-  </div>
-  <hr>
-    <h3 class="helpitem">Privacy Statement and Warrant Canary</h3>
-  <div class="helptext">
-    <p>SynthPass requests access to all website content in order to detect password input fields and fill them for you, but that is the extent of its involvement with your data, because it is a self-contained piece of code that does not rely on servers to do its job. Neither the Master Password nor the synthesized passwords made by the app are ever stored, even locally. Therefore:</p>
-    <p><strong>1. We cannot give your Master Password or any of your synthesized passwords to anyone</strong> (not even yourself) because we don't have them.</p>
-    <p><strong>2. We cannot give your private data to anyone</strong> because the app does not send anything to us. When you download the app from the extension store, you get only the code, without any cookies, plugins, or anything of that sort.</p>
-    <p><strong>4. We will never weaken the cryptography methods contained within the app at the request of a third party, private or public.</strong> This also means no backdoors will ever be added. We would rather shut down the project than be forced to do this, which would betray the very essence of our efforts. If we learn that a counterfeit version is circulating, whether placed by hackers or government agencies, we will make the fact known to users.</p>
-    <p>The app does store your user ID, options, and serials for any given website (not the generated password, and much less the Master Password) into Google servers so you can have them on different machines. These are all optional, and you don't have to supply them if this is a problem. In this case you may have to use the generator app included further up in this Help page, which does not sync with Google at all. This data is shared with nobody else, and in fact we don't have access to it, only Google and yourself do.</p>
-    <p><strong>Notice:</strong> Since this program is distributed as a piece of human-readable code, we consider it an expression of free speech protected by the laws of many countries. Putting into circulation tampered versions of the app, whether by individuals or public entities, violates free speech and copyright protection laws.</p>
-    <p>SynthPass contains strong cryptographic methods, which may be illegal to use in some countries. Please check the local laws before using it.</p>
-    <div id="canary"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8BAMAAADI0sRBAAAAGFBMVEUAAAAAAAD///91XhdgYGCcnJzMzMzUqipkv+fEAAAAAXRSTlMAQObYZgAAAYFJREFUOMt1lLGOgzAQREEUaVkHkhpEUkOVmvsDIt31IF1PdP8vnWwzHtaGKRDmsbO7eHGm9Cfyys4km/ojmEvQ/ZBS10N6Gl+I18/v6G/KtCrTOnVuscbWSwsxPYPBwEsGw1nxgEGpxoUzuI00MjuDqWdwvyD4e88nuOdbMFOge3j79V3liHAjL7np4kt4u5V2fwS8bGbbHd3hjZ0wyt1hZAzuxL3FZoffqrUSlaG4qqU2HFbMfoplj68pNqr0T4xF4SFUMyJcY+EqxVgTS4QlwkZjrAXSubFRsw4H5p5BxLlIgwfTIW6DoXafPcYkqN74zRf3uN7bf2HHChvnuMGX7WoRYD8tTN/4q2CS/YQ8tvY79GwsXjO3J6jq/Qz7Mds8ds5RSDypAmz4zSr1E/EfQ9MJHjDd5PSGu1Vt8Q3BOBrVDuNdnj0DB2RCvH0xPpnYHoLhXmluXdajU7E7ONOj+YyP5Fzx9MDHQHIkQGCv1WtcaFqSkKeUumjnVB80TP0D1fGXaRHBg/YAAAAASUVORK5CYII=">
-    <p>This paragraph and the canary logo above attest to the fact that, up until the release of SynthPass version 0.2.9 (March 2023) we have not received any requests under gag order for user data or modifications of the code. This paragraph will be periodically updated as this situation continues.</p>
+    <h2 class="centered" id="helpHeading">Welcome to SynthPass 2</h2>
+    <div class="centered">
+        <span id='helpmsg'>Click on each title to learn more.</span>
     </div>
-  </div>
-  <hr>
-  <address>
-  SynthPass 0.2.9 &#169; F. Ruiz 2023
-  </address>
-  <ul>
-    <li>smart Password engine based on WiseHash by F. Ruiz 2014</li>
-    <li>engine: NaCl by D. Bernstein, W. Janssen, T. Lange, P. Schwabe, M. Dempsky, and A. Moon 2013</li>
-    <li>tweetNaCl JavaScript implementation by D. Chestnykh and D. Mandiri 2015</li>
-    <li>scrypt key stretching implementation by D. Chestnykh 2014</li>
-  </ul>
-  <address>
-  This document may be used, modified or redistributed under GNU GPL license, version 3.0 or higher.
-  </address>
-</div> 
-<!--functions for opening and closing help items, plus password synthesis in last item-->
-  <script src="../js-src/help.js"></script>
-  <script src="../js-src/main.js"></script>
+    <br>
+    <hr>
+
+    <h3 class="helpitem">What is SynthPass?</h3>
+    <div class="helptext">
+        <p>SynthPass doesn't store your passwords; it <strong>synthesizes</strong> them on the fly using a Master Key (MK) and the website's name. This means there is no central database to hack and no subscription to pay.</p>
+        <p><strong>The Golden Rule:</strong> Everything depends on your Master Key. It is never stored by the extension. If you lose it, you cannot recover your synthesized passwords. Use the 4-letter <strong>Hashili</strong> word (e.g., "Bana") that appears as you type to verify your MK is correct without revealing it.</p>
+    </div>
+    <hr>
+
+    <h3 class="helpitem">How do I Change a Password?</h3>
+    <div class="helptext">
+        <p>Rotating a password is a four-step "copy-and-fill" process:</p>
+        <ol>
+            <li><strong>Navigate</strong> to the "Change Password" page of the website.</li>
+            <li><strong>Copy Old Pwd</strong>: Without changing your settings, click the <strong>Change</strong> button in SynthPass. This recreates your current password and copies it to your clipboard.</li>
+            <li><strong>Generate New Pwd</strong>: Change your Serial or constraints, then click <strong>Synthesize</strong>. All password fields on the page will be filled with the new version.</li>
+            <li><strong>Authorize</strong>: Paste the old password from your clipboard into the "Old Password" field on the website.</li>
+        </ol>
+    </div>
+    <hr>
+
+    <h3 class="helpitem">The Vault & Secure Notes</h3>
+    <div class="helptext">
+        <p>Use the Vault for passwords you didn't synthesize or for secure notes.</p>
+        <ul>
+            <li><strong>MASTER KEY REQUIRED</strong>: You <strong>must</strong> enter your Master Key to encrypt, decrypt, or delete Vault items.</li>
+            <li><strong>Encrypted Storage</strong>: Data is encrypted locally using NaCl cryptography before being saved to browser sync storage.</li>
+            <li><strong>Visual Indicator</strong>: The Vault button highlights if a record exists for the current site.</li>
+            <li><strong>Universal Use</strong>: If a page has no password fields, decrypting a Vault item will copy it to your clipboard for one minute.</li>
+            <li><strong>To Delete</strong>: Click Vault and type <code>DELETE</code> in the prompt.</li>
+        </ul>
+    </div>
+    <hr>
+
+    <h3 class="helpitem">Smart Keywords & Constraints</h3>
+    <div class="helptext">
+        <p>Type these into the <strong>Allowed Characters</strong> box to modify the output. You can combine a number with a keyword (e.g., <code>12 pin</code>).</p>
+        <table class="help-table" width="100%">
+            <tr><th align="left">Keyword</th><th align="left">Resulting Character Set</th></tr>
+            <tr><td><strong>numeric</strong> / <strong>pin</strong></td><td>Digits only (0-9)</td></tr>
+            <tr><td><strong>alphanumeric</strong> / <strong>alpha</strong></td><td>Letters and numbers only; no symbols</td></tr>
+            <tr><td><strong>hex</strong></td><td>Hexadecimal (0-9, a-f)</td></tr>
+            <tr><td><strong>lowercase</strong></td><td>All letters forced to small case</td></tr>
+            <tr><td><strong>uppercase</strong></td><td>All letters forced to capitals</td></tr>
+            <tr><td><strong>(Literals)</strong></td><td>Any symbols you type directly (like <code>!@#$</code>) will be used</td></tr>
+        </table>
+    </div>
+    <hr>
+
+    <h3 class="helpitem">Upgrading from Legacy SynthPass</h3>
+    <div class="helptext">
+        <p>Transitioning to the new engine is automatic:</p>
+        <ul>
+            <li><strong>Trigger Cleanup</strong>: You no longer need to type <code>+</code> or <code>-</code> in the Length field. SynthPass 2 detects these, moves the data to the new Vault button, and cleans up the characters for you.</li>
+            <li><strong>Classic Mode</strong>: If a password doesn't match a legacy one, check the <strong>Classic Mode</strong> box to use the old engine.</li>
+        </ul>
+    </div>
+    <hr>
+
+    <h3 class="helpitem">Mobile Use & Privacy Bar</h3>
+    <div class="helptext">
+        <p>Since most mobile browsers don't support extensions, use our web app to get your passwords on the go:</p>
+        <p><a href="https://privacybar.net/mobile" target="_blank">https://privacybar.net/mobile</a></p>
+        <p>For advanced protection—including secure search and encrypted page isolation—check out our flagship app, <strong>Privacy Bar</strong>, at <a href="https://privacybar.net" target="_blank">privacybar.net</a>.</p>
+    </div>
+    <hr>
+
+    <h3 class="helpitem">Verify Code Integrity (Audit)</h3>
+    <div class="helptext">
+        <p>SynthPass is <strong>source-available</strong> on GitHub so you can verify that the code running in your browser matches the developer's original build. This facilitates security auditing and trust.</p>
+        
+        <strong>Official Repository:</strong><br>
+        <a href="https://github.com/fruiz500/SynthPass" target="_blank" class="accent-text">https://github.com/fruiz500/SynthPass</a>
+        <br><br>
+
+        <p>To verify the authenticity of the code after installation, do this:</p>
+
+        <strong>1. Find your Extension Folder:</strong>
+        <ul class="audit-list">
+            <li><strong>Mac:</strong> <code>~/Library/Application Support/Google/Chrome/Default/Extensions/khkpfnickpejcjhajmkljfadcaegphkd</code></li>
+            <li><strong>Windows:</strong> <code>%LOCALAPPDATA%\Google\Chrome\User Data\Default\Extensions\khkpfnickpejcjhajmkljfadcaegphkd</code></li>
+            <li><strong>Linux:</strong> <code>~/.config/google-chrome/Default/Extensions/khkpfnickpejcjhajmkljfadcaegphkd</code></li>
+        </ul>
+
+        <strong>2. Download the Manifest:</strong>
+        <p>Save the official <a href="https://synthpass.com/hashes.txt" target="_blank">hashes.txt</a> file into that folder.</p>
+
+        <strong>3. Run the Verification Command:</strong>
+        <div class="command-box">
+            <strong>MacOS/Linux:</strong><br>
+            <code>shasum -a 256 -c hashes.txt</code>
+            <br><br>
+            <strong>Windows (PowerShell):</strong><br>
+            <code>Get-Content hashes.txt | Where-Object { $_ -notmatch '^#' } | ForEach-Object { $h, $f = $_ -split ' +'; if ((Get-FileHash $f).Hash -eq $h) { "$f: OK" } else { "$f: FAIL" } }</code>
+        </div>
+
+        <div class="troubleshoot-box">
+            <strong>Troubleshooting Mismatches (LF vs CRLF):</strong><br>
+            If a file says <strong>FAIL</strong> but you haven't changed the code, it is likely due to line-ending conversion. Windows often converts <code>LF</code> to <code>CRLF</code>, which changes the file's hash. To be certain, inspect the file manually via DevTools (F12) to audit the raw logic.
+        </div>
+
+        <p class="audit-note">
+            <em>Note: "Reading" the code does not constitute a license to copy, modify, or redistribute the logic. "Don't trust. Verify."</em>
+        </p>
+    </div>
+    <hr>
+
+    <address>
+        SynthPass 2.0 &copy; F. Ruiz 2026<br>
+        Source Available via <a href="https://github.com/fruiz500/synthpass" target="_blank">GitHub</a>. 
+        Licensed under the <a href="https://polyformproject.org/licenses/shield/1.0.0/" target="_blank">PolyForm Shield License 1.0.0</a>.
+    </address>
+</div>
+
+<script src="../js-src/help.js"></script>
+<script src="../js-src/main.js"></script>
 </body>
 </html>
