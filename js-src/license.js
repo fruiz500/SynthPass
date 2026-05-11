@@ -1,32 +1,27 @@
-        /*
-		@source: https://github.com/fruiz500/synthpass
+/*
+@source: https://github.com/fruiz500/synthpass
 
-        @licstart  The following is the entire license notice for the
-        JavaScript code in this page.
+@licstart  The following is the entire license notice for the
+JavaScript code in this page.
 
-        Copyright (C) 2023  Francisco Ruiz
+Copyright (C) 2026  Francisco Ruiz
 
-        The JavaScript code in this page is free software: you can
-        redistribute it and/or modify it under the terms of the GNU
-        General Public License (GNU GPL) as published by the Free Software
-        Foundation, either version 3 of the License, or (at your option)
-        any later version.  The code is distributed WITHOUT ANY WARRANTY;
-        without even the implied warranty of MERCHANTABILITY or FITNESS
-        FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+This software is released under the PolyForm Shield License 1.0.0.
+Permission is granted to use, study, and modify this code for personal 
+and non-commercial purposes. 
 
-        As additional permission under GNU GPL version 3 section 7, you
-        may distribute non-source (e.g., minimized or compacted) forms of
-        that code without the copy of the GNU GPL normally required by
-        section 4, provided you include this license notice and a URL
-        through which recipients can access the Corresponding Source.
+As a "Source-Available" project, "reading" or auditing the code does not 
+constitute a license to redistribute, modify, or use the logic for 
+commercial products or services.
 
+Full license terms can be found at: 
+https://polyformproject.org/licenses/shield/1.0.0/
 
-        @licend  The above is the entire license notice
-        for the JavaScript code in this page.
-        */
+@licend  The above is the entire license notice
+for the JavaScript code in this page.
+*/
 
-    if (window.location.protocol == "http:") {				//force SSL/TLS
-
-        var restOfUrl = window.location.href.substr(5);
-        window.location = "https:" + restOfUrl;
-	}
+if (window.location.protocol == "http:") { // force SSL/TLS
+    var restOfUrl = window.location.href.substr(5);
+    window.location = "https:" + restOfUrl;
+}

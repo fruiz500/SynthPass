@@ -1,3 +1,12 @@
+/**
+ * SynthPass
+ * © 2026 Francisco Ruiz. All Rights Reserved.
+ * * This source code is "Source-Available" for security auditing purposes only.
+ * Redistribution, modification, or commercial use is strictly prohibited 
+ * without explicit permission from the author.
+ * * "Servers are Evil."
+ */
+
 //to select the result
 function copyOutput(){
   if(outputBox.textContent.trim() != ''){
@@ -111,12 +120,4 @@ window.onload = function() {
 	for (var i = 0; i < helpHeaders.length; i++) {
 		helpHeaders[i].addEventListener('click', openHelp);
 	}
-	
-	document.body.style.backgroundColor = 'white';
-	okBtn.addEventListener('click', doStuffHelp);								//execute
-	showPwdModeHelp.addEventListener('click', function(){showPwd('Help')});
-	copyBtn.addEventListener('click', copyOutput);
-	
-	masterPwdHelp.addEventListener('keyup', pwdKeyupHelp, false);
-	outputBox.addEventListener('keyup', outputKeyup, false)
 }
