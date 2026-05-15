@@ -10,7 +10,7 @@
 // This is the main code for SynthPass
 
 //global variables that will be used in computations
-var websiteName, cryptoStr = '', masterPwd, mainMsg;
+var websiteName, cryptoStr = '', masterPwd, mainMsg, activeTab;
 
 //gets executed with the OK button
 async function doStuff() {
@@ -95,20 +95,27 @@ function pwdSynth(boxNumber, pwd, serial, isPin, isAlpha, pwdLength) {
 		return result;
 	} else {
 		// --- MODERN ENGINE ---
-		const rawInput = pwdLength + " " + (document.getElementById("allowed-chars")?.value || "");
-		let charset = buildAllowedCharset(rawInput) || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_-+=";
+		// Fix: Use ONLY the allowed-chars field for charset, matching Privacy Bar
+		const allowedInput = document.getElementById("allowed-chars")?.value.trim() || "";
+		const defaultCharset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_-+=";
+		let charset = allowedInput ? buildAllowedCharset(allowedInput) : defaultCharset;
 
 		let bigIntHash = BigInt(0);
 		for (let i = 0; i < hashBytes.length; i++) {
 			bigIntHash = (bigIntHash << 8n) + BigInt(hashBytes[i]);
 		}
 
+		// Safety Guard: Prevent division by zero crash
 		const baseBI = BigInt(charset.length);
+		if (baseBI === 0n) throw new Error("Invalid character set.");
+
 		let synthesized = "";
 		while (bigIntHash > 0n) {
 			synthesized = charset[Number(bigIntHash % baseBI)] + synthesized;
 			bigIntHash /= baseBI;
 		}
+		
+		// Slicing logic is now handled in doStuff to maintain consistency
 		return synthesized;
 	}
 }
@@ -149,6 +156,7 @@ function buildAllowedCharset(inputStr) {
 chrome.runtime.onMessage.addListener(
 	function (request, sender, sendResponse) {
 		if (request.message == "start_info") {
+			activeTab = sender.tab;
 			mainMsg = document.getElementById("mainMsg");
 			// 1. Identify the website domain
 			var hostParts = request.host.split('.');

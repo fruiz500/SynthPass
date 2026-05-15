@@ -9,6 +9,8 @@
 
 window.onload = function () {
 
+	mainMsg = document.getElementById("mainMsg");
+
 	// Synthesis and Change actions
 	document.getElementById('do-synth').addEventListener('click', function () { doStuff(); });
 	document.getElementById('change-synth').addEventListener('click', changeSynth);
