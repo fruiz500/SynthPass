@@ -3,7 +3,7 @@
   "short_name": "SynthPass",
   "description": "High-security password synthesizer", 
   "omnibox": { "keyword" : "src" },
-  "version": "2.0.0",
+  "version": "2.0.1",
   "manifest_version": 3,
   "icons": {
     "16": "img/icon16.png",
